@@ -1,0 +1,21 @@
+#comment-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#comment-section {
+    list-style-type: none !important;
+    height: 500px;
+    overflow: auto;
+    max-width: 300px;
+}
+
+#new-comment {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+.comment {
+    font-size: 16px;
+    background-color: #bdbdbd;
+}
