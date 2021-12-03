@@ -1,0 +1,68 @@
+<p>This is a web application of CS-546 Group 3!</p>
+
+
+<form method="get" action="/rating">
+    <button type="submit">Start Rating</button>
+</form>
+
+{{!-- search bar --}}
+<div class="search-head">
+
+    <div id="error" class="error" hidden></div>
+
+    <form id="myForm">
+        <label for="searchTerm">Search: </label>
+        <input type="text" id="searchTerm" placeholder="Enter name">
+        <button type="submit">Submit</button>
+    </form>
+
+</div>
+
+<div id="search-result">
+</div>
+
+<div class="no-result" id="no-result" hidden>
+    <p>No results found!</p>
+</div>
+
+
+{{!-- videogames list --}}
+<div class="videogames-heading">
+    <div class="videogames-title">
+        <p>Videogames</p>
+    </div>
+    <div class="filter">
+        <div class="sort-btn">
+            <button onclick="descendingSort()" class="btn">High to Low</button>
+            <button onClick="ascendingSort()" class="btn">Low to High</button>
+        </div>
+    </div>
+
+</div>
+
+<div id="videogame-list">
+    {{#each videogames}}
+    <div class="card">
+        <div class="name">
+            <p> Name:</p>
+            <p>{{this.name}}</p>
+        </div>
+        <div class="genre">
+            <p>Genre:</p>
+            <p>{{this.genre}}</p>
+
+        </div>
+        <div class="score">
+            <p>Score:</p>
+            <p> {{this.score}}</p>
+        </div>
+        <div class="videogame-img">
+            <img src="{{this.boxart}}">
+        </div>
+    </div>
+    {{/each}}
+</div>
+
+
+
+<script src="/public/js/videogameList.js"></script>
