@@ -32,33 +32,41 @@ router.get('/:id', async (req, res) => {
 
 router.post('/:id/comment/:commentId', async(req, res) => {
     if(!req.params || !req.params.id || !req.params.commentId) {
-        res.status(400).render('/error/error', {error: 'No user id passed in'});
+        res.status(400).json({error: 'No user id passed in'});
         return;
     }
 
     if(!req.body) {
-        res.status(400).render('/error/error', {error: 'No data in request body'});
+        res.status(400).json({error: 'No data in request body'});
         return;
     }
     if(!req.body.like) {
-        res.status(400).render('/error/error', {error: 'No like data in request body'});
+        res.status(400).json({error: 'No like data in request body'});
+        return;
+    }
+    if(!req.body.operation) {
+        res.status(400).json({error: 'No operation in request body'});
         return;
     }
 
     try {
-        if(req.body.like === 1) {   // Used liked comment
-            const updateInfo = await users.likeComment(req.params.id, req.params.commentId);
-            res.json(...updateInfo);
-        } else if(req.body.like === -1) {   // Used disliked comment
-            const updateInfo = await users.dislikeComment(req.params.id, req.params.commentId);
-            res.json(...updateInfo);
-        } else {
-            throw new Error('Innaprorpiate data recieved');
+        if(req.body.operation === 'addData') {
+            if(req.body.like == 1) {   // Used liked comment
+                const updateInfo = await users.likeComment(req.params.id, req.params.commentId);
+                res.json(updateInfo);
+            } else if(req.body.like == -1) {   // Used disliked comment
+                const updateInfo = await users.dislikeComment(req.params.id, req.params.commentId);
+                res.json(updateInfo);
+            } else {
+                throw new Error('Innaprorpiate data recieved');
+            }
+        } else if(req.body.operation === 'removeData') {
+            res.json(await users.removeLikeOrDislike(req.params.id, req.params.commentId, req.body.like));
         }
     } catch(e) {
-        res.status(500).render('error/error.handlebars', {error: `${e}`});
+        res.status(500).json({error: `${e}`});
         return;
     }
-})
+});
 
 module.exports = router;

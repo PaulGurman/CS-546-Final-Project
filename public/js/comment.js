@@ -6,11 +6,11 @@ var thisScript = document.currentScript;
     const titleInput = $('#title-input');
     const missingInputMessage = $('#missing-input-message');
     const likeButton = $('.like-button');
+    const dislikeButton = $('.dislike-button');
 
     newCommentForm.submit(function(e){
         e.preventDefault();
 
-        const game_id = thisScript.getAttribute('game-id');
         const username = thisScript.getAttribute('username');
         const title = titleInput.val();
         const comment = commentTextArea.val();
@@ -28,9 +28,12 @@ var thisScript = document.currentScript;
         const reviewerPar = $('<p>', {text: `${username}, ${date}`});
         const commentPar = $('<p>', {text: comment});
         const commentDiv = $('<div>', {class: 'comment'});
-        const likeButton = $('<button>', {class: 'like-button', text: 'Like'});
-        const dislikeButton = $('<button>', {class: 'dislike-button', text: 'Dislike'});
-        commentDiv.append(titlePar).append(reviewerPar).append(commentPar).append(likeButton).append(dislikeButton);
+        const likeButton = $('<button>', {class: 'like-button', text: 'Like', click: likeFunction});
+        const dislikeButton = $('<button>', {class: 'dislike-button', text: 'Dislike', click: dislikeFunction});
+        const likePar = $('<p>', {text: 'Likes: 0', class: 'like-count'});
+        const dislikePar = $('<p>', {text: 'Dislikes: 0', class: 'dislike-count'});
+        commentDiv.append(titlePar).append(reviewerPar).append(commentPar).append(likeButton).append(dislikeButton)
+            .append(likePar).append(dislikePar);
         const listItem = $('<li>');
         listItem.append(commentDiv);
         commentSection.append(listItem);
@@ -58,9 +61,143 @@ var thisScript = document.currentScript;
 
     });
 
-    likeButton.click(function(e) {
+    const likeFunction = function(e) {
         e.preventDefault();
 
         const commentId = $(e.target).parent().attr('comment-id');
-    });
+        const userId = thisScript.getAttribute('userId');
+
+        if(!userId) return;
+
+        const likeCount = $(e.target).parent().children('.like-count').first();
+        const dislikeCount = $(e.target).parent().children('.dislike-count').first();
+
+        const relatedDislikeButton = $(e.target).parent().children('.dislike-button').first();
+
+        // Disable buttons 
+        $(e.target).prop('disabled', true);
+        relatedDislikeButton.prop('disabled', true);
+
+        var requestConfig = {
+            type: 'POST',
+            url: `../users/${userId}/comment/${commentId}`,
+            data: {like: 1, operation: 'addData'}
+        }
+
+        $.ajax(requestConfig).then((res) => {
+            if(res.modified) {
+                // You must up the like count of that comment, possibly decrement the dislike count
+                requestConfig.url = window.location.href + '/comment/' + commentId;
+                requestConfig.data = {like: 1, operation: 'add'};
+
+                const wasDisliked = res.wasDisliked;
+
+                $.ajax(requestConfig).then((res) => {
+                    likeCount.text(`Likes: ${res.likes}`);
+
+                    // If comment was previously disliked, remove that data from user, and decrement dislike count for comment
+                    if(wasDisliked) {
+                        requestConfig.data = {like: -1, operation: 'remove'};
+                        $.ajax(requestConfig).then((res) => {
+                            dislikeCount.text(`Dislikes: ${res.dislikes}`);
+                            requestConfig.url = `../users/${userId}/comment/${commentId}`;
+                            requestConfig.data = {like: -1, operation: 'removeData'};
+                            $.ajax(requestConfig).then((res) => {
+                                $(e.target).prop('disabled', false);
+                                relatedDislikeButton.prop('disabled', false);
+                                console.log(res);
+                            });
+                        });
+                    } else {
+                        $(e.target).prop('disabled', false);
+                        relatedDislikeButton.prop('disabled', false);
+                    }
+                });
+            } else {
+                // You must remove that like from their likes, then decrement comment's like count
+                requestConfig.data = {like: 1, operation: 'removeData'};
+                $.ajax(requestConfig).then((res) => {
+                    requestConfig.url = window.location.href + '/comment/' + commentId;
+                    requestConfig.data = {like:1, operation: 'remove'};
+                    $.ajax(requestConfig).then((res) => {
+                        likeCount.text(`Likes: ${res.likes}`);
+                        $(e.target).prop('disabled', false);
+                        relatedDislikeButton.prop('disabled', false);
+                    });
+                });
+            }
+        })
+
+    };
+
+    const dislikeFunction = function(e) {
+        e.preventDefault();
+
+        const commentId = $(e.target).parent().attr('comment-id');
+        const userId = thisScript.getAttribute('userId');
+
+        if(!userId) return;
+             
+        const likeCount = $(e.target).parent().children('.like-count').first();
+        const dislikeCount = $(e.target).parent().children('.dislike-count').first();
+
+        const relatedLikeButton = $(e.target).parent().children('.dislike-button').first();
+
+        // Disable buttons 
+        $(e.target).prop('disabled', true);
+        relatedLikeButton.prop('disabled', true);
+
+        var requestConfig = {
+            type: 'POST',
+            url: `../users/${userId}/comment/${commentId}`,
+            data: {like: -1, operation: 'addData'}
+        }
+
+        $.ajax(requestConfig).then((res) => {
+            if(res.modified) {
+                // You must up the dislike count of that comment, possibly decrement the like count
+                requestConfig.url = window.location.href + '/comment/' + commentId;
+                requestConfig.data = {like: -1, operation: 'add'};
+
+                const wasLiked = res.wasLiked;
+
+                $.ajax(requestConfig).then((res) => {
+                    dislikeCount.text(`Dislikes: ${res.dislikes}`);
+                    // If comment was previously liked, remove that data from user, and decrement dislike count for comment
+                    if(wasLiked) {
+                        requestConfig.data = {like: 1, operation: 'remove'};
+                        $.ajax(requestConfig).then((res) => {
+                            likeCount.text(`Likes: ${res.likes}`);
+                            requestConfig.url = `../users/${userId}/comment/${commentId}`;
+                            requestConfig.data = {like: 1, operation: 'removeData'};
+                            $.ajax(requestConfig).then((res) => {
+                                $(e.target).prop('disabled', false);
+                                relatedLikeButton.prop('disabled', false);
+                            });
+                        });
+
+                    } else {
+                        $(e.target).prop('disabled', false);
+                        relatedLikeButton.prop('disabled', false);
+                    }
+                });
+            } else {
+                // You must remove that like from their dislikes, then decrement comment's dislike count
+                requestConfig.data = {like: -1, operation: 'removeData'};
+                $.ajax(requestConfig).then((res) => {
+                    requestConfig.url = window.location.href + '/comment/' + commentId;
+                    requestConfig.data = {like: -1, operation: 'remove'};
+                    $.ajax(requestConfig).then((res) => {
+                        dislikeCount.text(`Dislikes: ${res.dislikes}`);
+                        $(e.target).prop('disabled', false);
+                        relatedLikeButton.prop('disabled', false);
+                    });
+                });
+            }
+        })
+
+    };
+
+    likeButton.click(likeFunction);
+    dislikeButton.click(dislikeFunction);
 })(window.jQuery);

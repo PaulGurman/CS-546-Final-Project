@@ -17,7 +17,10 @@ router.get('/:id', async (req, res) => {
 
     const isLoggedIn = req.session.user !== undefined; 
 
-    res.render('videogames/videogamesPage.handlebars', {videogameData: videogameData, isLoggedIn: !isLoggedIn, username: 'Default'});
+    res.render('videogames/videogamesPage.handlebars', {videogameData: videogameData, 
+                                                        isLoggedIn: !isLoggedIn, 
+                                                        username: 'Default',
+                                                        userId: '61a7c3841d6ce1017136a8ba'});   // TODO: Remove hardcoded id and username
 })
 
 router.post('/:id', async(req, res) => {
@@ -67,16 +70,24 @@ router.post('/:id/comment/:commentId', async(req, res) => {
         res.status(400).json({error: 'No data in request body'});
         return;
     }
-    if(!req.body.like) {
-        res.status(400).json({error: 'No like data in request body'});
+    if(!req.body.like || !req.body.operation) {
+        res.status(400).json({error: 'Missing like data in request body'});
         return;
     }
 
     try {
-        const updateInfo = await comments.addLikeDislike(req.params.id, req.params.commentId, req.body.like);
-        res.json(updateInfo);
+        if(req.body.operation === 'add') {
+            const updateInfo = await comments.addLikeDislike(req.params.id, req.params.commentId, req.body.like);
+            res.json(updateInfo);
+        } else if (req.body.operation === 'remove') {
+            const updateInfo = await comments.removeLikeDislike(req.params.id, req.params.commentId, req.body.like);
+            res.json(updateInfo);
+        } else {
+            res.status(400).json({error: 'Operation is not either add or remove'});
+            return;
+        }
     } catch(e) {
-        res.status(500).render('/error/error', {error: `${e}`});
+        res.status(500).json({error: `${e}`});
         return;
     }
 });

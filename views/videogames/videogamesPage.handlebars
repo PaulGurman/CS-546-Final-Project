@@ -56,6 +56,8 @@
                 <p>{{comment}}</p>
                 <button class="like-button">Like</button>
                 <button class="dislike-button">Dislike</button>
+                <p class="like-count">Likes: {{likes}}</p>
+                <p class="dislike-count">Dislikes: {{dislikes}}</p>
             </div>
         </li>
         {{/each}}
@@ -81,4 +83,4 @@
     integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
     crossorigin="anonymous">
 </script>
-<script src="../../public/js/comment.js" game-id="{{videogameData._id}}" userId = "{{userId}}" username="{{username}}"></script>
+<script src="../../public/js/comment.js" userId="{{userId}}" username="{{username}}"></script>

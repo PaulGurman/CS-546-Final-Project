@@ -52,27 +52,32 @@ async function addLikeDislike(gameId, commentId, like) {
 
     // like can be 1 (user liked) or -1 (user disliked)
     
-    if(like !== 1 || like !== -1) {
+    if(like != 1 && like != -1) {
         throw new Error('like must be 1 or -1');
     }
 
     const gameCollection = await videogames();
     const game = await gameCollection.findOne({_id: ObjectId(gameId)});
 
-    for(var comment in game.comments) {
-        if(comment._id == ObjectId(commentId)) {
+    const res = {likes: 0, dislikes: 0};
+
+    for(var comment of game.comments) {
+        if(comment._id == commentId) {
             if(like == 1) {
                 comment.likes += 1
             } else {
                 comment.dislikes += 1
             }
+            res.likes = comment.likes;
+            res.dislikes = comment.dislikes;
+
             break;
         }
     }
 
     const info = await gameCollection.updateOne({_id: game._id}, {$set: {comments: game.comments}});
     
-    return info;
+    return res;
 }
 
 async function removeLikeDislike(gameId, commentId, like) {
@@ -81,27 +86,32 @@ async function removeLikeDislike(gameId, commentId, like) {
 
     // like can be 1 (user liked) or -1 (user disliked)
     
-    if(like !== 1 || like !== -1) {
+    if(like != 1 && like != -1) {
         throw new Error('like must be 1 or -1');
     }
 
     const gameCollection = await videogames();
     const game = await gameCollection.findOne({_id: ObjectId(gameId)});
 
-    for(var comment in game.comments) {
-        if(comment._id == ObjectId(commentId)) {
-            if(like == 1) {
+    const res = {likes: 0, dislikes: 0};
+
+    for(var comment of game.comments) {
+        if(comment._id == commentId) {
+            if(like == 1 && comment.likes > 0) {
                 comment.likes -= 1
-            } else {
+            } else if(comment.dislikes > 0){
                 comment.dislikes -= 1
             }
+
+            res.likes = comment.likes;
+            res.dislikes = comment.dislikes;
             break;
         }
     }
 
     const info = await gameCollection.updateOne({_id: game._id}, {$set: {comments: game.comments}});
     
-    return info;
+    return res;
 }
 
 module.exports = {create, addLikeDislike, removeLikeDislike}
