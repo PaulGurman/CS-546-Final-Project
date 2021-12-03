@@ -15,46 +15,86 @@ router.get('/:id', async (req, res) => {
     // Make call from videogames.users to get user data with id
     const videogameData = await videogames.getGame(req.params.id);
 
-    const isLoggedIn = req.session.user !== undefined; 
+    const isLoggedIn = req.session !== undefined && req.session.user !== undefined; 
 
-    res.render('videogames/videogamesPage.handlebars', {videogameData: videogameData, isLoggedIn: !isLoggedIn, username: 'Default'});
+    const username = req.session && req.session.user && req.session.user.username ? req.session.user.username : 'No User';
+   
+    const userId = req.session && req.session.user && req.session.user.user_id ? req.session.user.user_id : undefined;
+
+    res.render('videogames/videogamesPage.handlebars', {videogameData: videogameData, 
+                                                        isLoggedIn: isLoggedIn, 
+                                                        username: username,
+                                                        userId: userId});   // TODO: Remove hardcoded id and username
 })
 
 router.post('/:id', async(req, res) => {
     if(!req.params || !req.params.id) {
-        res.status(400).render('/error/error', {error: 'No video game id passed in'});
+        res.status(400).json({error: 'No video game id passed in'});
         return;
     }
 
     if(!req.body) {
-        res.status(400).render('/error/error', {error: 'No data in request body'});
+        res.status(400).json({error: 'No data in request body'});
         return;
     }
 
     if(!req.body.reviewer) {
-        res.status(400).render('/error/error', {error: 'Missing username'});
+        res.status(400).json({error: 'Missing username'});
         return;
     }
     if(!req.body.title) {
-        res.status(400).render('/error/error', {error: 'Missing title'});
+        res.status(400).json({error: 'Missing title'});
         return;
     }
     if(!req.body.comment) {
-        res.status(400).render('/error/error', {error: 'Missing comment'});
+        res.status(400).json({error: 'Missing comment'});
         return;
     }
     if(!req.body.date) {
-        res.status(400).render('/error/error', {error: 'Missing date'});
+        res.status(400).json({error: 'Missing date'});
         return;
     }
 
     try {
-        const comment = await comments.create(req.params.id, req.body.title, req.body.reviewer, req.body.date, req.body.comment)
+        const comment = await comments.create(req.params.id, req.body.title, req.body.reviewer, req.body.date, req.body.comment);
+        res.json(comment);
     } catch(e) {
-        res.status(500).render('/error/error', {error: `${e}`});
+        res.status(500).json({error: `${e}`});
         return;
     }
-})
+});
+
+router.post('/:id/comment/:commentId', async(req, res) => {
+    if(!req.params || !req.params.id || !req.params.commentId) {
+        res.status(400).json({error: 'No video game id passed in'});
+        return;
+    }
+
+    if(!req.body) {
+        res.status(400).json({error: 'No data in request body'});
+        return;
+    }
+    if(!req.body.like || !req.body.operation) {
+        res.status(400).json({error: 'Missing like data in request body'});
+        return;
+    }
+
+    try {
+        if(req.body.operation === 'add') {
+            const updateInfo = await comments.addLikeDislike(req.params.id, req.params.commentId, req.body.like);
+            res.json(updateInfo);
+        } else if (req.body.operation === 'remove') {
+            const updateInfo = await comments.removeLikeDislike(req.params.id, req.params.commentId, req.body.like);
+            res.json(updateInfo);
+        } else {
+            res.status(400).json({error: 'Operation is not either add or remove'});
+            return;
+        }
+    } catch(e) {
+        res.status(500).json({error: `${e}`});
+        return;
+    }
+});
 
 router.post('/', async (req, res) => {
     const { gameTitle, releaseDate, developer, genre, price, boxart } = req.body;

@@ -36,7 +36,9 @@ async function create(firstname, lastname, username, password) {
         username: username,
         password: password,
         numberOfVotes: 0,
-        voteHistory: []
+        voteHistory: [],
+        likedComments: [],
+        dislikedComments: []
     };
 
     const info = await userCollection.insertOne(user);
@@ -73,7 +75,85 @@ async function addGame(userId, gameId) {
     const info = await userCollection.updateOne({_id: user._id}, {$set: {voteHistory: user.voteHistory.concat([gameId])}});
 
     return info;
+}
+
+async function likeComment(userId, commentId) {
+    validateId(userId);
+    validateId(commentId);
+
+    const res = {modified: false, wasLiked: false, wasDisliked: false};
+
+    const userCollection = await users();
+
+    const user = await userCollection.findOne({_id: ObjectId(userId)});
+    if(user == null)
+        throw new Error(`No item was found in User collection that match with id: ${userId}`);
+
+    if(user.likedComments.findIndex(x => x === commentId) > -1)
+        res.wasLiked = true;
+    if(user.dislikedComments.findIndex(x => x === commentId) > -1)
+        res.wasDisliked = true;
+
+    res.wasLiked ? user.likedComments : user.likedComments.push(commentId);
+    user.dislikedComments.splice(user.dislikedComments.findIndex(x => x === commentId));
+    const info = await userCollection.updateOne({_id: user._id}, {$set: {likedComments: user.likedComments, 
+                                                                        dislikedComments: user.dislikedComments}});
+
+    res.modified = info.modifiedCount > 0;
+
+    return res;
+}
+
+async function dislikeComment(userId, commentId) {
+    validateId(userId);
+    validateId(commentId);
+
+    const userCollection = await users();
+
+    const res = {modified: false, wasLiked: false, wasDisliked: false};
+
+    const user = await userCollection.findOne({_id: ObjectId(userId)});
+    if(user == null)
+        throw new Error(`No item was found in User collection that match with id: ${userId}`);
+
+    if(user.likedComments.findIndex(x => x === commentId) > -1)
+        res.wasLiked = true;
+    if(user.dislikedComments.findIndex(x => x === commentId) > -1)
+        res.wasDisliked = true;
+
+    res.wasDisliked ? user.dislikedComments : user.dislikedComments.push(commentId);
+    user.likedComments.splice(user.likedComments.findIndex(x => x === commentId));
+    const info = await userCollection.updateOne({_id: user._id}, {$set: {dislikedComments: user.dislikedComments, 
+                                                                        likedComments: user.likedComments}});
+
+    res.modified = info.modifiedCount > 0;
+
+    return res;
+}
+
+async function removeLikeOrDislike(userId, commentId, like){
+    validateId(userId);
+    validateId(commentId);
+
+    const userCollection = await users();
+
+    const user = await userCollection.findOne({_id: ObjectId(userId)});
+    if(user == null)
+        throw new Error(`No item was found in User collection that match with id: ${userId}`);
+    
+    if(like == 1) {
+        user.likedComments.splice(user.likedComments.findIndex(x => x === commentId));
+    } else if (like == -1) {
+        user.dislikedComments.splice(user.dislikedComments.findIndex(x => x === commentId));
+    } else {
+        throw new Error('Illegal input recieved');
+    }
+
+    const info = await userCollection.updateOne({_id: user._id}, 
+                {$set: like == 1 ? {likedComments: user.likedComments} : {dislikedComments: user.dislikedComments}});
+
+    return info;
 
 }
 
-module.exports = {create, getUser, addGame}
+module.exports = {create, getUser, addGame, likeComment, dislikeComment, removeLikeOrDislike}
