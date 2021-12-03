@@ -42,6 +42,7 @@ router.post('/', async (req, res) => {
         if (!newGame) {
             res.status(400).render('videogames/creategamePage.handlebars', { error: "Game was not successfully added" });
         } else {
+            // If game is added redirects you to its page
             res.render('videogames/videogamesPage.handlebars', {videogameData: newGame});
         }
     } catch (e) {

@@ -1,19 +1,20 @@
+<h1>Add a Game:</h1>
 <form action='/videogames' method='POST'>  
     <label for="game_title">Game Title:</label>
     <input type="text" name="gameTitle" placeholder="Enter the title of the game" id="game_title"><br>
     <label for="release_date">Release Date:</label>
-    <input type="date" name="releaseDate" placeholder="Enter the release date of the game" id="release_date"><br>
-    <label for="developer">Game Developer:</label>
+    <input type="date" name="releaseDate" id="release_date"><br>
+    <label for="developer">Developer:</label>
     <input type="text" name="developer" placeholder="Enter the developer of the game" id="developer"><br>
-    <label for="genre">Game Genre:</label>
+    <label for="genre">Genre:</label>
     <input type="text" name="genre" placeholder="Enter the genre of the game" id="genre"><br>
-    <label for="price">Game Price:</label>
+    <label for="price">Price:</label>
     <input type="number" step ="0.01" name="price" placeholder="Enter the price of the game" id="price"><br>
-    <label for="boxart">Game Boxart:</label>
+    <label for="boxart">Boxart Source:</label>
     <input type="text" name="boxart" placeholder="Enter the image source for the boxart" id="boxart"><br>
     <button type="submit">Submit Game</button>   
 </form>   
 {{#if error}}
-<div>{{error}}</div>
+<div class="error">{{error}}</div>
 {{else}}
 {{/if}}  
