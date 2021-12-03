@@ -35,6 +35,8 @@ async function create(gameId, title, reviewer, date, comment) {
         reviewer: reviewer,
         date: date,
         comment: comment,
+        likes: 0,
+        dislikes: 0
     };
 
     const game = await gameCollection.findOne({_id: ObjectId(gameId)});
@@ -44,4 +46,62 @@ async function create(gameId, title, reviewer, date, comment) {
     return ObjectIdToString(commentObj);
 }
 
-module.exports = {create}
+async function addLikeDislike(gameId, commentId, like) {
+    validateId(gameId);
+    validateId(commentId);
+
+    // like can be 1 (user liked) or -1 (user disliked)
+    
+    if(like !== 1 || like !== -1) {
+        throw new Error('like must be 1 or -1');
+    }
+
+    const gameCollection = await videogames();
+    const game = await gameCollection.findOne({_id: ObjectId(gameId)});
+
+    for(var comment in game.comments) {
+        if(comment._id == ObjectId(commentId)) {
+            if(like == 1) {
+                comment.likes += 1
+            } else {
+                comment.dislikes += 1
+            }
+            break;
+        }
+    }
+
+    const info = await gameCollection.updateOne({_id: game._id}, {$set: {comments: game.comments}});
+    
+    return info;
+}
+
+async function removeLikeDislike(gameId, commentId, like) {
+    validateId(gameId);
+    validateId(commentId);
+
+    // like can be 1 (user liked) or -1 (user disliked)
+    
+    if(like !== 1 || like !== -1) {
+        throw new Error('like must be 1 or -1');
+    }
+
+    const gameCollection = await videogames();
+    const game = await gameCollection.findOne({_id: ObjectId(gameId)});
+
+    for(var comment in game.comments) {
+        if(comment._id == ObjectId(commentId)) {
+            if(like == 1) {
+                comment.likes -= 1
+            } else {
+                comment.dislikes -= 1
+            }
+            break;
+        }
+    }
+
+    const info = await gameCollection.updateOne({_id: game._id}, {$set: {comments: game.comments}});
+    
+    return info;
+}
+
+module.exports = {create, addLikeDislike, removeLikeDislike}

@@ -36,7 +36,9 @@ async function create(firstname, lastname, username, password) {
         username: username,
         password: password,
         numberOfVotes: 0,
-        voteHistory: []
+        voteHistory: [],
+        likedComments: [],
+        dislikedComments: []
     };
 
     const info = await userCollection.insertOne(user);
@@ -73,7 +75,42 @@ async function addGame(userId, gameId) {
     const info = await userCollection.updateOne({_id: user._id}, {$set: {voteHistory: user.voteHistory.concat([gameId])}});
 
     return info;
-
 }
 
-module.exports = {create, getUser, addGame}
+async function likeComment(userId, commentId) {
+    validateId(userId);
+    validateId(commentId);
+
+    const userCollection = await users();
+
+    const user = await userCollection.findOne({_id: ObjectId(userId)});
+    if(user == null)
+        throw new Error(`No item was found in User collection that match with id: ${userId}`);
+
+    const newLikedComments = user.likedComments.contains(commentId) ? user.likedComments : user.likedComments.push(commentId);
+    const newDislikedComments = user.dislikedComments.splice(user.dislikedComments.findIndex(x => x === commentId));
+    const info = await userCollection.updateOne({_id: user._id}, {$set: {likedComments: newLikedComments, 
+                                                                        dislikedComments: newDislikedComments}});
+
+    return info;
+}
+
+async function dislikeComment(userId, commentId) {
+    validateId(userId);
+    validateId(commentId);
+
+    const userCollection = await users();
+
+    const user = await userCollection.findOne({_id: ObjectId(userId)});
+    if(user == null)
+        throw new Error(`No item was found in User collection that match with id: ${userId}`);
+
+    const newDislikedComments = user.dislikedComments.contains(commentId) ? user.dislikedComments : user.dislikedComments.push(commentId);
+    const newLikedComments = user.likedComments.splice(user.likedComments.findIndex(x => x === commentId));
+    const info = await userCollection.updateOne({_id: user._id}, {$set: {dislikedComments: newDislikedComments, 
+                                                                        likedComments: newLikedComments}});
+
+    return info;
+}
+
+module.exports = {create, getUser, addGame, likeComment, dislikeComment}

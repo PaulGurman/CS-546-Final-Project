@@ -5,6 +5,7 @@ var thisScript = document.currentScript;
     const commentTextArea = $('#comment-text-area');
     const titleInput = $('#title-input');
     const missingInputMessage = $('#missing-input-message');
+    const likeButton = $('.like-button');
 
     newCommentForm.submit(function(e){
         e.preventDefault();
@@ -22,14 +23,14 @@ var thisScript = document.currentScript;
             missingInputMessage.hide();
         }
 
-        console.log(`${game_id}, ${username}, ${title}, ${comment}, ${date}`);
-
         // Make content for page
         const titlePar = $('<p>', {text: title});
         const reviewerPar = $('<p>', {text: `${username}, ${date}`});
         const commentPar = $('<p>', {text: comment});
         const commentDiv = $('<div>', {class: 'comment'});
-        commentDiv.append(titlePar).append(reviewerPar).append(commentPar);
+        const likeButton = $('<button>', {class: 'like-button', text: 'Like'});
+        const dislikeButton = $('<button>', {class: 'dislike-button', text: 'Dislike'});
+        commentDiv.append(titlePar).append(reviewerPar).append(commentPar).append(likeButton).append(dislikeButton);
         const listItem = $('<li>');
         listItem.append(commentDiv);
         commentSection.append(listItem);
@@ -41,13 +42,25 @@ var thisScript = document.currentScript;
           }, 1000);
 
         // Ajax call
-        $.post(window.location.href, {reviewer: username, title: title, comment: comment, date: date}, (res) => {
-            // no-op
+        const requestConfig = {
+            type: 'POST',
+            url: window.location.href,
+            data: {reviewer: username, title: title, comment: comment, date: date}
+        }
+        $.ajax(requestConfig).then((res) => {
+            console.log(res._id);
+            commentDiv.attr('comment-id', res._id);
         });
 
         // Clear inputs
         titleInput.val('');
         commentTextArea.val('');
 
+    });
+
+    likeButton.click(function(e) {
+        e.preventDefault();
+
+        const commentId = $(e.target).parent().attr('comment-id');
     });
 })(window.jQuery);
