@@ -15,12 +15,16 @@ router.get('/:id', async (req, res) => {
     // Make call from videogames.users to get user data with id
     const videogameData = await videogames.getGame(req.params.id);
 
-    const isLoggedIn = req.session.user !== undefined; 
+    const isLoggedIn = req.session !== undefined && req.session.user !== undefined; 
+
+    const username = req.session && req.session.user && req.session.user.username ? req.session.user.username : 'No User';
+   
+    const userId = req.session && req.session.user && req.session.user.user_id ? req.session.user.user_id : undefined;
 
     res.render('videogames/videogamesPage.handlebars', {videogameData: videogameData, 
-                                                        isLoggedIn: !isLoggedIn, 
-                                                        username: 'Default',
-                                                        userId: '61a7c3841d6ce1017136a8ba'});   // TODO: Remove hardcoded id and username
+                                                        isLoggedIn: isLoggedIn, 
+                                                        username: username,
+                                                        userId: userId});   // TODO: Remove hardcoded id and username
 })
 
 router.post('/:id', async(req, res) => {
