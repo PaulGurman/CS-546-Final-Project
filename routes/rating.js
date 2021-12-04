@@ -3,19 +3,19 @@ const router = express.Router();
 const data = require('../data');
 const ratings = data.ratings;
 
-function type_checker(item, type, errString, objType){
-    if(item == undefined || typeof(item) != type || item.length == 0) throw errString;
-    if(type == "string"){
+function type_checker(item, type, errString, objType) {
+    if (item == undefined || typeof(item) != type || item.length == 0) throw errString;
+    if (type == "string") {
         if (!/\S/.test(item)) throw errString;
     }
-    if(objType == "array"){
-        if(!Array.isArray(item) || item.length == 0) throw errString;
+    if (objType == "array") {
+        if (!Array.isArray(item) || item.length == 0) throw errString;
     }
 }
 
-router.get('/', async (req, res) => {
-    try{
-        if(req.session.leftGame != undefined){
+router.get('/', async(req, res) => {
+    try {
+        if (req.session.leftGame != undefined) {
             const leftGame = await games.getGame(req.session.leftGame);
             const rightGame = await games.getGame(req.session.rightGame);
             res.render('rating', {
@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
                 price2: rightGame.price,
                 developer2: rightGame.developer,
             });
-        } else { 
+        } else {
             const newLeft = ratings.getRandomGame();
             const newRight = ratings.getRandomGame();
             req.session.leftGame = newLeft.id;
@@ -52,16 +52,16 @@ router.get('/', async (req, res) => {
                 developer2: newRight.developer,
             });
         }
-    } catch(e){
+    } catch (e) {
         console.log(e);
         return;
     }
 });
 
-router.post('/reset', async (req, res) => {
-    try{
+router.post('/reset', async(req, res) => {
+    try {
         await ratings.addRatingToUser(req.session.user);
-        if(req.data.side == 'left'){
+        if (req.data.side == 'left') {
             await ratings.addRating(req.session.leftGame, 1);
             await ratings.addRating(req.session.rightGame, 0);
         } else {
@@ -89,7 +89,7 @@ router.post('/reset', async (req, res) => {
             developer2: newRight.developer,
         };
         res.json(resetData);
-    } catch(e){
+    } catch (e) {
         res.json(null);
         console.log(e);
         return;
