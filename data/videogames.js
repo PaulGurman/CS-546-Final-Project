@@ -3,7 +3,7 @@ const videogames = mongoCollections.videogames;
 let { ObjectId } = require('mongodb');
 
 function ObjectIdToString(obj) {
-    if(typeof obj !== 'object' || !ObjectId.isValid(obj._id))
+    if (typeof obj !== 'object' || !ObjectId.isValid(obj._id))
         throw new Error('Object passed in needs to have a valid _id field');
 
     obj._id = obj._id.toString();
@@ -12,7 +12,7 @@ function ObjectIdToString(obj) {
 }
 
 function validateId(id) {
-    if(!id || typeof id !== 'string' || !stringCheck(id) || !ObjectId.isValid(id))
+    if (!id || typeof id !== 'string' || !stringCheck(id) || !ObjectId.isValid(id))
         throw new Error('id must be a valid ObjectId string');
 }
 
@@ -21,14 +21,14 @@ function stringCheck(str) {
 }
 
 async function create(name, releaseDate, developer, genre, price, boxart) {
-    if(!name || !releaseDate || !developer || !genre || !price || !boxart)
+    if (!name || !releaseDate || !developer || !genre || !price || !boxart)
         throw new Error("Missing input");
 
-    if(!stringCheck(name) || !stringCheck(releaseDate) || !stringCheck(developer) || !stringCheck(genre) || !stringCheck(price) || !stringCheck(boxart))
+    if (!stringCheck(name) || !stringCheck(releaseDate) || !stringCheck(developer) || !stringCheck(genre) || !stringCheck(price) || !stringCheck(boxart))
         throw new Error("All strings must contain non-whitespace characters");
 
     const gameCollection = await videogames();
-    
+
     const game = {
         name: name,
         releaseDate: releaseDate,
@@ -51,11 +51,20 @@ async function getGame(id) {
 
     const gameCollection = await videogames();
 
-    const game = await gameCollection.findOne({_id: ObjectId(id)});
-    if(game == null)
+    const game = await gameCollection.findOne({ _id: ObjectId(id) });
+    if (game == null)
         throw new Error(`No item was found in User collection that match with id: ${id}`);
 
     return ObjectIdToString(game);
 }
 
-module.exports = {create, getGame}
+async function getAllVideoGames() {
+    const videogamesCollection = await videogames();
+    const videogamesList = await videogamesCollection.find({}).toArray();
+    for (let i of videogamesList) {
+        i._id = i._id.toString();
+    }
+    return videogamesList;
+}
+
+module.exports = { create, getGame, getAllVideoGames }
