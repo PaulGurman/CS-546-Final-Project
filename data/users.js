@@ -2,6 +2,8 @@ const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
 const videogames = mongoCollections.videogames;
 let { ObjectId } = require('mongodb');
+const bcrypt = require('bcrypt');
+const saltRounds = 12;
 
 function ObjectIdToString(obj) {
     if (typeof obj !== 'object' || !ObjectId.isValid(obj._id))
@@ -21,7 +23,7 @@ function stringCheck(str) {
     return typeof str === 'string' && str.length > 0 && str.replace(/\s/g, "").length > 0;
 }
 
-async function create(firstname, lastname, username, password) {
+async function create(firstname, lastname, username, password , isAdmin = false) {
     if (!firstname || !lastname || !username || !password)
         throw new Error("Missing input");
 
@@ -30,15 +32,18 @@ async function create(firstname, lastname, username, password) {
 
     const userCollection = await users();
 
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
     const user = {
         firstname: firstname,
         lastname: lastname,
         username: username,
-        password: password,
+        password: hashedPassword,
         numberOfVotes: 0,
         voteHistory: [],
         likedComments: [],
-        dislikedComments: []
+        dislikedComments: [],
+        isAdmin : isAdmin
     };
 
     const info = await userCollection.insertOne(user);
@@ -166,8 +171,7 @@ async function removeLikeOrDislike(userId, commentId, like) {
 
 
 ////////fucntions for login and sign up///////
-const bcrypt = require('bcrypt');
-const saltRounds = 16;
+
 
 function checkUserName(str) {
 
