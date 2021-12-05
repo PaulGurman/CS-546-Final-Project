@@ -15,7 +15,7 @@ router.get('/', async(req, res) => {
     }
     const videogameList = await videogames.getAllVideoGames();
     //console.log(videogameList);
-    res.render('homepage/home', { videogames: videogameList, userLoggedIn: userLoggedIn, userId: userId });
+    res.render('homepage/home', { videogames: videogameList, userLoggedIn: userLoggedIn, userId: userId, isAdmin: req.session.isAdmin });
 });
 
 router.get('/login', async(req, res) => {
@@ -106,7 +106,11 @@ router.post('/login', async(req, res) => {
             //get user ID 
             //set  req.session.AuthCookie = userId;
             let userId = await usersData.getUserId(username);
-            req.session.AuthCookie = userId;
+            const user = await usersData.getUser(userId);
+            if(user.isAdmin){
+                req.session.isAdmin = true;
+            }
+
             res.redirect('/'); //if login return to homepage
         }
     } catch (e) {

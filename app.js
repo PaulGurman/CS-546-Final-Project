@@ -35,6 +35,16 @@ app.use('/rating', (req, res, next) => {
     } 
 });
 
+// Create screen middleware only letting admin users create games
+app.use('/videoganes/create', (req, res, next) => {
+    // console.log(req.url);
+    if (!req.session.user || !req.session.isAdmin) {
+        return res.redirect('/');
+    } else {
+        return next();
+    } 
+});
+
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
