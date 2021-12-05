@@ -63,7 +63,7 @@
         {{/each}}
     </ul>
 
-    {{#if isLoggedIn}}
+    {{#if userLoggedIn}}
     <p id='missing-input-message' hidden='true'>Please fill out all fields</p>
     <form id="new-comment" method="post" action="/comments">
         <label for="title-input">Title</label>

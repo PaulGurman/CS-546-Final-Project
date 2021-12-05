@@ -7,7 +7,7 @@ const usersData = data.users;
 
 router.get('/', async(req, res) => {
     let userLoggedIn = false;
-    let userId = req.session.AuthCookie;
+    let userId = req.session.user?.userId;
     if (!userId) {
         userLoggedIn = false;
     } else {
@@ -15,12 +15,12 @@ router.get('/', async(req, res) => {
     }
     const videogameList = await videogames.getAllVideoGames();
     //console.log(videogameList);
-    res.render('homepage/home', { videogames: videogameList, userLoggedIn: userLoggedIn, userId: userId, isAdmin: req.session.isAdmin });
+    res.render('homepage/home', { videogames: videogameList, userLoggedIn: userLoggedIn, userId: userId, isAdmin: req.session.user?.isAdmin });
 });
 
 router.get('/login', async(req, res) => {
-    console.log(req.session.AuthCookie)
-    if (req.session.AuthCookie) {
+    console.log(req.session.user?.userId)
+    if (req.session.user?.userId) {
         res.redirect('/'); // if log in, return to homapage 
     } else {
         res.render('homepage/login');
@@ -29,7 +29,7 @@ router.get('/login', async(req, res) => {
 
 
 router.get('/signup', async(req, res) => {
-    if (req.session.AuthCookie) {
+    if (req.session.user?.userId) {
         res.redirect('/'); // if log in, return to homapage 
     } else {
         res.render('homepage/signup');
@@ -64,9 +64,9 @@ router.post('/signup', async(req, res) => {
     }
 
     try {
-        const createUser = await usersData.create(firstName, lastName, username, password); //create function in data/users.js
+        const createUser = await usersData.create(firstName, lastName, username.toLowerCase(), password); //create function in data/users.js
         if (createUser) {
-            res.redirect('/');
+            res.redirect('/login');
         } else {
             res.status(500).json({ message: "Internal Server Error" });
         }
@@ -102,13 +102,14 @@ router.post('/login', async(req, res) => {
     try {
         const checkUser = await usersData.checkUser(username, password);
         if (checkUser) {
-            req.session.user = username;
             //get user ID 
-            //set  req.session.AuthCookie = userId;
-            let userId = await usersData.getUserId(username);
+            let userId = await usersData.getUserId(username.toLowerCase());
+            //req.session.AuthCookie = userId;
+            req.session.user = {userId: userId};
             const user = await usersData.getUser(userId);
+            req.session.user.username = user.username;
             if(user.isAdmin){
-                req.session.isAdmin = true;
+                req.session.user.isAdmin = true;
             }
 
             res.redirect('/'); //if login return to homepage
