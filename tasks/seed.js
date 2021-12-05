@@ -33,7 +33,7 @@ async function main() {
         "Resident Evil 4",
         "2005-1-11",
         "Capcom",
-        "Third-person shooter",
+        "Action",
         "19.99",
         "https://howlongtobeat.com/games/250px-Resi4-gc-cover.jpg"
     );
@@ -49,15 +49,46 @@ async function main() {
         "Halo 3",
         "2007-09-25",
         "Bungie Inc",
-        "First-person shooter",
+        "Action",
         "29.99",
         "https://upload.wikimedia.org/wikipedia/en/b/b4/Halo_3_final_boxshot.JPG"
     );
-
+    const portal = await videogames.create(
+        "Portal",
+        "2007-10-10",
+        "Valve",
+        "Adventure",
+        "9.99",
+        "https://i1.theportalwiki.net/img/thumb/b/b8/PortalBoxart.jpg/133px-PortalBoxart.jpg"
+    );
+    const burnout = await videogames.create(
+        "Burnout™ Paradise",
+        "2008-01-22",
+        "Criterion Software",
+        "Racing",
+        "9.99",
+        "https://upload.wikimedia.org/wikipedia/en/thumb/a/ab/Burnout_Paradise_Boxart_2.jpg/220px-Burnout_Paradise_Boxart_2.jpg"
+    );
+    const civ5 = await videogames.create(
+        "Sid Meier's Civilization® V",
+        "2010-09-21",
+        "Firaxis Games",
+        "Strategy",
+        "29.99",
+        "https://howlongtobeat.com/games/CIVILIZATION-V-FRONT-OF-BOX.jpg"
+    );
+    const truckSim = await videogames.create(
+        "Euro Truck Simulator 2",
+        "2012-10-18",
+        "SCS Software",
+        "Simulation",
+        "19.99",
+        "https://howlongtobeat.com/games/Euro_Truck_Simulator_2_cover.jpg"
+    );
     const re4id = re4._id;
     const discoElysiumid = discoElysium._id;
+    const halo3id = halo3._id;
 
-    //TODO ADD reviews to the restaurants
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!

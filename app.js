@@ -17,7 +17,7 @@ app.use(
     secret: "some secret string!",
     resave: false,
     saveUninitialized: true,
-    cookie: {maxAge: 30000}
+    cookie: {maxAge: 3600000}
     })
 );
 
@@ -36,8 +36,7 @@ app.use('/rating', (req, res, next) => {
 });
 
 // Create screen middleware only letting admin users create games
-app.use('/videoganes/create', (req, res, next) => {
-    // console.log(req.url);
+app.use('/videogames/create', (req, res, next) => {
     if (!req.session.user || !req.session.isAdmin) {
         return res.redirect('/');
     } else {

@@ -22,3 +22,21 @@
     height: auto;
     word-wrap: break-word;
 }
+
+#create_game_form fieldset {
+    width: 25%;
+}
+#create_game_form input, textarea, select {
+    width : 200px;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+  
+#create_game_form label, #submit_area {
+    display: block;
+}
+
+#create_game_form button {
+    margin: 5px 0px;
+}

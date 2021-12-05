@@ -1,20 +1,40 @@
 <h1>Add a Game:</h1>
-<form action='/videogames' method='POST'>  
-    <label for="game_title">Game Title:</label>
-    <input type="text" name="gameTitle" placeholder="Enter the title of the game" id="game_title"><br>
+<form action='/videogames' method='POST' id="create_game_form">  
+  <fieldset>
+    <legend>Game Info</legend>
+    <label for="game_title">Title:</label>
+    <input type="text" name="gameTitle" placeholder="Enter the title of the game" id="game_title">
     <label for="release_date">Release Date:</label>
-    <input type="date" name="releaseDate" id="release_date"><br>
+    <input type="date" name="releaseDate" id="release_date">
     <label for="developer">Developer:</label>
-    <input type="text" name="developer" placeholder="Enter the developer of the game" id="developer"><br>
+    <input type="text" name="developer" placeholder="Enter the developer of the game" id="developer">
     <label for="genre">Genre:</label>
-    <input type="text" name="genre" placeholder="Enter the genre of the game" id="genre"><br>
+    <select id="genres" name="genre">
+        <option value="Action">Action</option>
+        <option value="RPG">RPG</option>
+        <option value="Strategy">Strategy</option>
+        <option value="Adventure">Adventure</option>
+        <option value="Simulation">Simulation</option>
+        <option value="Sports">Sports</option>
+        <option value="Racing">Racing</option>
+    </select>
     <label for="price">Price:</label>
-    <input type="number" step ="0.01" name="price" placeholder="Enter the price of the game" id="price"><br>
+    <input type="number" step ="0.01" name="price" placeholder="Enter the price of the game" id="price">
     <label for="boxart">Boxart Source:</label>
-    <input type="text" name="boxart" placeholder="Enter the image source for the boxart" id="boxart"><br>
-    <button type="submit">Submit Game</button>   
+    <input type="text" name="boxart" placeholder="Enter the image source for the boxart" id="boxart">
+    <div id="submit_area">
+        <button id="preview_boxart">Preview Boxart</button>
+        <button type="submit">Submit Game</button>
+    </div>
+  </fieldset>   
 </form>   
 {{#if error}}
 <div class="error">{{error}}</div>
 {{else}}
 {{/if}}  
+<script 
+    src="https://code.jquery.com/jquery-2.2.4.min.js" 
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+    crossorigin="anonymous">
+</script>
+<script src="../../public/js/createGame.js" userId="{{userId}}" username="{{username}}"></script>
