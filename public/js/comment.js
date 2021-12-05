@@ -67,7 +67,11 @@ var thisScript = document.currentScript;
         const commentId = $(e.target).parent().attr('comment-id');
         const userId = thisScript.getAttribute('userId');
 
-        if(!userId) return;
+        if(!userId) {
+            window.location.replace('../login');
+            return;
+        }
+             
 
         const likeCount = $(e.target).parent().children('.like-count').first();
         const dislikeCount = $(e.target).parent().children('.dislike-count').first();
@@ -136,7 +140,10 @@ var thisScript = document.currentScript;
         const commentId = $(e.target).parent().attr('comment-id');
         const userId = thisScript.getAttribute('userId');
 
-        if(!userId) return;
+        if(!userId) {
+            window.location.replace('../login');
+            return;
+        }
              
         const likeCount = $(e.target).parent().children('.like-count').first();
         const dislikeCount = $(e.target).parent().children('.dislike-count').first();
