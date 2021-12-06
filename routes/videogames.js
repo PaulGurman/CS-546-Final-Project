@@ -108,9 +108,12 @@ router.post('/', async (req, res) => {
         if(!gameTitle || !releaseDate || !developer || !genre || !price || !boxart)
             throw new Error("Missing input");
         if(!stringCheck(gameTitle) || !stringCheck(releaseDate) || !stringCheck(developer) || !stringCheck(genre) || !stringCheck(price) || !stringCheck(boxart))
-            throw new Error("All strings must contain non-whitespace characters");
+            throw new Error("All strings must contain non-whitespace characters");        
     } catch (e) {
-        res.status(400).render('videogames/creategamePage.handlebars', { error: e.message });
+        res.status(400).render('videogames/creategamePage.handlebars', 
+            { error: e.message,
+              previous: {gameTitle, releaseDate, developer, genre, price, boxart}
+            });
         return;
     }
 

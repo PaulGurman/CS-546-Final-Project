@@ -23,7 +23,7 @@
     word-wrap: break-word;
 }
 
-#create_game_form fieldset {
+#create_game_form {
     width: 25%;
 }
 #create_game_form input, textarea, select {
@@ -39,4 +39,30 @@
 
 #create_game_form button {
     margin: 5px 0px;
+}
+
+#preview{
+    width: 20%;
+    padding: 2px 4px;
+    margin: 2px;
+    border: 1px solid;
+}
+#preview img{
+    width:200px;
+    height: 300px;
+}
+
+
+.error {
+    width: 20%;
+    padding: 2px 4px;
+    margin: 2px;
+    color: #ba3939;
+    background: #ffe0e0;
+    border: 1px solid #a33a3a;
+    box-sizing: border-box;
+
+  }
+.error:hover {
+    background-color: #4948487a;
 }
