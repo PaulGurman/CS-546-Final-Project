@@ -119,7 +119,7 @@ router.post('/', async (req, res) => {
             { error: e.message,
               previous: {gameTitle, releaseDate, developer, genre, price, boxart},
               isAdmin: req.session.user?.isAdmin,
-              userLoggedIn: req.session.user !== undefined,
+              userLoggedIn: isLoggedIn,
               userId: req.session.user?.userId,
               isAdmin: req.session.user?.isAdmin
             });
@@ -134,7 +134,8 @@ router.post('/', async (req, res) => {
         if (!newGame) {
             res.status(400).render('videogames/creategamePage.handlebars', 
             {   error: "Game was not successfully added",
-                userLoggedIn: req.session.user !== undefined,
+                previous: {gameTitle, releaseDate, developer, genre, price, boxart},
+                userLoggedIn: isLoggedIn,
                 isAdmin: req.session.user?.isAdmin,
                 userId: req.session.user?.userId
             });
