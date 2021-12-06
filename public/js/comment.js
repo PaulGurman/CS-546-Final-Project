@@ -51,7 +51,7 @@ var thisScript = document.currentScript;
             data: {reviewer: username, title: title, comment: comment, date: date}
         }
         $.ajax(requestConfig).then((res) => {
-            console.log(res._id);
+            //console.log(res._id);
             commentDiv.attr('comment-id', res._id);
         });
 
@@ -105,12 +105,14 @@ var thisScript = document.currentScript;
                         $.ajax(requestConfig).then((res) => {
                             dislikeCount.text(`Dislikes: ${res.dislikes}`);
                             requestConfig.url = `../users/${userId}/comment/${commentId}`;
-                            requestConfig.data = {like: -1, operation: 'removeData'};
-                            $.ajax(requestConfig).then((res) => {
-                                $(e.target).prop('disabled', false);
-                                relatedDislikeButton.prop('disabled', false);
-                                console.log(res);
-                            });
+                            // requestConfig.data = {like: -1, operation: 'removeData'};
+                            // $.ajax(requestConfig).then((res) => {
+                            //     $(e.target).prop('disabled', false);
+                            //     relatedDislikeButton.prop('disabled', false);
+                            //     console.log(res);
+                            // });
+                            $(e.target).prop('disabled', false);
+                            relatedDislikeButton.prop('disabled', false);
                         });
                     } else {
                         $(e.target).prop('disabled', false);
@@ -175,12 +177,14 @@ var thisScript = document.currentScript;
                         requestConfig.data = {like: 1, operation: 'remove'};
                         $.ajax(requestConfig).then((res) => {
                             likeCount.text(`Likes: ${res.likes}`);
-                            requestConfig.url = `../users/${userId}/comment/${commentId}`;
-                            requestConfig.data = {like: 1, operation: 'removeData'};
-                            $.ajax(requestConfig).then((res) => {
-                                $(e.target).prop('disabled', false);
-                                relatedLikeButton.prop('disabled', false);
-                            });
+                            // requestConfig.url = `../users/${userId}/comment/${commentId}`;
+                            // requestConfig.data = {like: 1, operation: 'removeData'};
+                            // $.ajax(requestConfig).then((res) => {
+                            //     $(e.target).prop('disabled', false);
+                            //     relatedLikeButton.prop('disabled', false);
+                            // });
+                            $(e.target).prop('disabled', false);
+                            relatedLikeButton.prop('disabled', false);
                         });
 
                     } else {
