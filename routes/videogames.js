@@ -3,8 +3,11 @@ const { videogames, comments } = require('../data');
 const router = express.Router();
 
 router.get('/create', async (req, res) => {
-    res.render('videogames/creategamePage.handlebars', {});
-})
+    res.render('videogames/creategamePage.handlebars', { 
+                                            userLoggedIn: req.session.user !== undefined,
+                                            userId: req.session.user?.userId,
+                                            isAdmin: req.session.user?.isAdmin});
+});
 
 router.get('/:id', async (req, res) => {
     if(!req.params || !req.params.id) {
@@ -19,10 +22,11 @@ router.get('/:id', async (req, res) => {
 
     const username = req.session && req.session.user && req.session.user.username ? req.session.user.username : 'No User';
    
-    const userId = req.session && req.session.user && req.session.user.user_id ? req.session.user.user_id : undefined;
+    const userId = req.session && req.session.user?.userId ? req.session.user?.userId : undefined;
 
     res.render('videogames/videogamesPage.handlebars', {videogameData: videogameData, 
-                                                        isLoggedIn: isLoggedIn, 
+                                                        isAdmin: req.session.user?.isAdmin,
+                                                        userLoggedIn: isLoggedIn, 
                                                         username: username,
                                                         userId: userId});   // TODO: Remove hardcoded id and username
 })

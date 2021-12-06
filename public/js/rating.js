@@ -28,7 +28,7 @@
     leftGame.on('click', function() {
         var config = {
             method: 'POST',
-            url: '/ratings/reset',
+            url: '/rating/reset',
             data: {side: 'left'}
         };
         resetGames(config);
@@ -37,7 +37,7 @@
     rightGame.on('click', function() {
         var config = {
             method: 'POST',
-            url: '/ratings/reset',
+            url: '/rating/reset',
             data: {side: 'right'}
         };
         resetGames(config);

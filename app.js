@@ -26,6 +26,15 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.use('/users', (req, res, next) => {
+    // console.log(req.url);
+    if (!req.session.user) {
+        return res.redirect('/');
+    } else {
+        return next();
+    } 
+});
+
 app.use('/rating', (req, res, next) => {
     // console.log(req.url);
     if (!req.session.user) {
@@ -37,7 +46,7 @@ app.use('/rating', (req, res, next) => {
 
 // Create screen middleware only letting admin users create games
 app.use('/videogames/create', (req, res, next) => {
-    if (!req.session.user || !req.session.isAdmin) {
+    if (!req.session.user || !req.session.user.isAdmin) {
         return res.redirect('/');
     } else {
         return next();

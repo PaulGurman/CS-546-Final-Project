@@ -25,9 +25,10 @@ router.get('/:id', async (req, res) => {
         return;
     }
 
-    Object.keys(genreStats).forEach(g => genreStats[g] = (genreStats[g] / userData.numberOfVotes) * 100);
+    Object.keys(genreStats).forEach(g => genreStats[g] = ((genreStats[g] / userData.numberOfVotes) * 100).toFixed(2));
 
-    res.render('users/userPage.handlebars', {userData: userData, gameList: gameList, genreStats: genreStats});
+    res.render('users/userPage.handlebars', {userData: userData, gameList: gameList, genreStats: genreStats, userId: req.session.user?.userId, 
+            userLoggedIn: req.session.user !== undefined, isAdmin: req.session.user?.isAdmin});
 });
 
 router.post('/:id/comment/:commentId', async(req, res) => {

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const data = require('../data');
+const games = data.videogames;
 const ratings = data.ratings;
 
 function type_checker(item, type, errString, objType) {
@@ -18,7 +19,9 @@ router.get('/', async(req, res) => {
         if (req.session.leftGame != undefined) {
             const leftGame = await games.getGame(req.session.leftGame);
             const rightGame = await games.getGame(req.session.rightGame);
-            res.render('rating', {
+            req.session.leftGame = leftGame._id;
+            req.session.rightGame = rightGame._id;
+            res.render('ratings/rating', {
                 name1: leftGame.name,
                 image1: leftGame.boxart,
                 release1: leftGame.releaseDate,
@@ -31,13 +34,16 @@ router.get('/', async(req, res) => {
                 genre2: rightGame.genre,
                 price2: rightGame.price,
                 developer2: rightGame.developer,
+                userLoggedIn: req.session.user !== undefined,
+                userId: req.session.user?.userId,
+                isAdmin: req.session.user?.isAdmin,
             });
         } else {
-            const newLeft = ratings.getRandomGame();
-            const newRight = ratings.getRandomGame();
-            req.session.leftGame = newLeft.id;
-            req.session.rightGame = newRight.id;
-            res.render('rating', {
+            const newLeft = await ratings.getRandomGame();
+            const newRight = await ratings.getRandomGame();
+            req.session.leftGame = newLeft._id;
+            req.session.rightGame = newRight._id;
+            res.render('ratings/rating', {
                 name1: newLeft.name,
                 image1: newLeft.boxart,
                 release1: newLeft.releaseDate,
@@ -50,6 +56,9 @@ router.get('/', async(req, res) => {
                 genre2: newRight.genre,
                 price2: newRight.price,
                 developer2: newRight.developer,
+                userLoggedIn: req.session.user !== undefined,
+                userId: req.session.user?.userId,
+                isAdmin: req.session.user?.isAdmin
             });
         }
     } catch (e) {
@@ -60,19 +69,19 @@ router.get('/', async(req, res) => {
 
 router.post('/reset', async(req, res) => {
     try {
-        await ratings.addRatingToUser(req.session.user);
-        if (req.data.side == 'left') {
+        await ratings.addRatingToUser(req.session.user.username.toLowerCase(), req.body.side == 'left' ? req.session.leftGame : req.session.rightGame);
+        if (req.body.side == 'left') {
             await ratings.addRating(req.session.leftGame, 1);
             await ratings.addRating(req.session.rightGame, 0);
         } else {
             await ratings.addRating(req.session.rightGame, 1);
             await ratings.addRating(req.session.leftGame, 0);
         }
-        const newLeft = ratings.getRandomGame();
-        const newRight = ratings.getRandomGame();
+        const newLeft = await ratings.getRandomGame();
+        const newRight = await ratings.getRandomGame();
 
-        req.session.leftGame = newLeft.id;
-        req.session.rightGame = newRight.id;
+        req.session.leftGame = newLeft._id;
+        req.session.rightGame = newRight._id;
 
         const resetData = {
             name1: newLeft.name,
