@@ -10,25 +10,38 @@ router.get('/create', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    if(!req.params || !req.params.id) {
-        res.status(500).render('/error/error', {error: 'No video game id passed in'});
-        return;
-    }
-
-    // Make call from videogames.users to get user data with id
-    const videogameData = await videogames.getGame(req.params.id);
-
     const isLoggedIn = req.session !== undefined && req.session.user !== undefined; 
 
     const username = req.session && req.session.user && req.session.user.username ? req.session.user.username : 'No User';
    
     const userId = req.session && req.session.user?.userId ? req.session.user?.userId : undefined;
 
-    res.render('videogames/videogamesPage.handlebars', {videogameData: videogameData, 
-                                                        isAdmin: req.session.user?.isAdmin,
-                                                        userLoggedIn: isLoggedIn, 
-                                                        username: username,
-                                                        userId: userId});   // TODO: Remove hardcoded id and username
+    if(!req.params || !req.params.id) {
+        res.status(500).render('error/error.handlebars', {error: 'No video game id passed in',
+                                                isAdmin: req.session.user?.isAdmin,
+                                                userLoggedIn: isLoggedIn, 
+                                                username: username,
+                                                userId: userId});
+        return;
+    }
+
+    // Make call from videogames.users to get user data with id
+    try{
+        const videogameData = await videogames.getGame(req.params.id);
+        res.render('videogames/videogamesPage.handlebars', {videogameData: videogameData, 
+                                                            isAdmin: req.session.user?.isAdmin,
+                                                            userLoggedIn: isLoggedIn, 
+                                                            username: username,
+                                                            userId: userId});   // TODO: Remove hardcoded id and username
+    } catch(e) {
+        res.status(500).render('error/error.handlebars', {error: e.message,
+                                                isAdmin: req.session.user?.isAdmin,
+                                                userLoggedIn: isLoggedIn, 
+                                                username: username,
+                                                userId: userId});
+    }
+
+
 })
 
 router.post('/:id', async(req, res) => {
@@ -107,28 +120,54 @@ router.post('/', async (req, res) => {
     function stringCheck(str) {
         return typeof str === 'string' && str.length > 0 && str.replace(/\s/g, "").length > 0;
     }
+    const isLoggedIn = req.session !== undefined && req.session.user !== undefined; 
 
     try {
         if(!gameTitle || !releaseDate || !developer || !genre || !price || !boxart)
             throw new Error("Missing input");
         if(!stringCheck(gameTitle) || !stringCheck(releaseDate) || !stringCheck(developer) || !stringCheck(genre) || !stringCheck(price) || !stringCheck(boxart))
-            throw new Error("All strings must contain non-whitespace characters");
+            throw new Error("All strings must contain non-whitespace characters");        
     } catch (e) {
-        res.status(400).render('videogames/creategamePage.handlebars', { error: e.message });
+        res.status(400).render('videogames/creategamePage.handlebars', 
+            { error: e.message,
+              previous: {gameTitle, releaseDate, developer, genre, price, boxart},
+              isAdmin: req.session.user?.isAdmin,
+              userLoggedIn: isLoggedIn,
+              userId: req.session.user?.userId,
+              isAdmin: req.session.user?.isAdmin
+            });
         return;
     }
 
     // Try to add game to database
     try {
         const newGame = await videogames.create(gameTitle, releaseDate, developer, genre, price, boxart)
+        const isLoggedIn = req.session !== undefined && req.session.user !== undefined; 
+
         if (!newGame) {
-            res.status(400).render('videogames/creategamePage.handlebars', { error: "Game was not successfully added" });
+            res.status(400).render('videogames/creategamePage.handlebars', 
+            {   error: "Game was not successfully added",
+                previous: {gameTitle, releaseDate, developer, genre, price, boxart},
+                userLoggedIn: isLoggedIn,
+                isAdmin: req.session.user?.isAdmin,
+                userId: req.session.user?.userId
+            });
         } else {
             // If game is added redirects you to its page
-            res.render('videogames/videogamesPage.handlebars', {videogameData: newGame});
+            res.render('videogames/videogamesPage.handlebars', 
+            {   videogameData: newGame,             
+                userLoggedIn: req.session.user !== undefined,
+                isAdmin: req.session.user?.isAdmin,
+                userId: req.session.user?.userId
+            });
         }
     } catch (e) {
-        res.status(400).render('videogames/creategamePage.handlebars', { error: e.message });
+        res.status(400).render('videogames/creategamePage.handlebars', 
+        {   error: e.message, 
+            userLoggedIn: req.session.user !== undefined,
+            isAdmin: req.session.user?.isAdmin,
+            userId: req.session.user?.userId 
+        });
         return;
     }
 });

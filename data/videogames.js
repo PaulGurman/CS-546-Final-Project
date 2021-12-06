@@ -53,7 +53,7 @@ async function getGame(id) {
 
     const game = await gameCollection.findOne({ _id: ObjectId(id) });
     if (game == null)
-        throw new Error(`No item was found in User collection that match with id: ${id}`);
+        throw new Error(`No item was found in Game collection that match with id: ${id}`);
 
     return ObjectIdToString(game);
 }
