@@ -10,25 +10,38 @@ router.get('/create', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    if(!req.params || !req.params.id) {
-        res.status(500).render('/error/error', {error: 'No video game id passed in'});
-        return;
-    }
-
-    // Make call from videogames.users to get user data with id
-    const videogameData = await videogames.getGame(req.params.id);
-
     const isLoggedIn = req.session !== undefined && req.session.user !== undefined; 
 
     const username = req.session && req.session.user && req.session.user.username ? req.session.user.username : 'No User';
    
     const userId = req.session && req.session.user?.userId ? req.session.user?.userId : undefined;
 
-    res.render('videogames/videogamesPage.handlebars', {videogameData: videogameData, 
-                                                        isAdmin: req.session.user?.isAdmin,
-                                                        userLoggedIn: isLoggedIn, 
-                                                        username: username,
-                                                        userId: userId});   // TODO: Remove hardcoded id and username
+    if(!req.params || !req.params.id) {
+        res.status(500).render('error/error.handlebars', {error: 'No video game id passed in',
+                                                isAdmin: req.session.user?.isAdmin,
+                                                userLoggedIn: isLoggedIn, 
+                                                username: username,
+                                                userId: userId});
+        return;
+    }
+
+    // Make call from videogames.users to get user data with id
+    try{
+        const videogameData = await videogames.getGame(req.params.id);
+        res.render('videogames/videogamesPage.handlebars', {videogameData: videogameData, 
+                                                            isAdmin: req.session.user?.isAdmin,
+                                                            userLoggedIn: isLoggedIn, 
+                                                            username: username,
+                                                            userId: userId});   // TODO: Remove hardcoded id and username
+    } catch(e) {
+        res.status(500).render('error/error.handlebars', {error: e.message,
+                                                isAdmin: req.session.user?.isAdmin,
+                                                userLoggedIn: isLoggedIn, 
+                                                username: username,
+                                                userId: userId});
+    }
+
+
 })
 
 router.post('/:id', async(req, res) => {
