@@ -119,9 +119,9 @@ router.post('/', async (req, res) => {
             { error: e.message,
               previous: {gameTitle, releaseDate, developer, genre, price, boxart},
               isAdmin: req.session.user?.isAdmin,
-              userLoggedIn: isLoggedIn, 
-              username: username,
-              userId: userId
+              userLoggedIn: req.session.user !== undefined,
+              userId: req.session.user?.userId,
+              isAdmin: req.session.user?.isAdmin
             });
         return;
     }
@@ -134,25 +134,25 @@ router.post('/', async (req, res) => {
         if (!newGame) {
             res.status(400).render('videogames/creategamePage.handlebars', 
             {   error: "Game was not successfully added",
-                userLoggedIn: isLoggedIn, 
-                username: username,
-                userId: userI
+                userLoggedIn: req.session.user !== undefined,
+                isAdmin: req.session.user?.isAdmin,
+                userId: req.session.user?.userId
             });
         } else {
             // If game is added redirects you to its page
             res.render('videogames/videogamesPage.handlebars', 
             {   videogameData: newGame,             
-                userLoggedIn: isLoggedIn, 
-                username: username,
-                userId: userId
+                userLoggedIn: req.session.user !== undefined,
+                isAdmin: req.session.user?.isAdmin,
+                userId: req.session.user?.userId
             });
         }
     } catch (e) {
         res.status(400).render('videogames/creategamePage.handlebars', 
         {   error: e.message, 
-            userLoggedIn: isLoggedIn, 
-            username: username,
-            userId: userId 
+            userLoggedIn: req.session.user !== undefined,
+            isAdmin: req.session.user?.isAdmin,
+            userId: req.session.user?.userId 
         });
         return;
     }
