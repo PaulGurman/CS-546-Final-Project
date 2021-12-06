@@ -100,7 +100,7 @@ async function likeComment(userId, commentId) {
         res.wasDisliked = true;
 
     res.wasLiked ? user.likedComments : user.likedComments.push(commentId);
-    user.dislikedComments.splice(user.dislikedComments.findIndex(x => x === commentId));
+    if(res.wasDisliked) user.dislikedComments.splice(user.dislikedComments.findIndex(x => x === commentId), 1);
     const info = await userCollection.updateOne({ _id: user._id }, {
         $set: {
             likedComments: user.likedComments,
@@ -131,7 +131,7 @@ async function dislikeComment(userId, commentId) {
         res.wasDisliked = true;
 
     res.wasDisliked ? user.dislikedComments : user.dislikedComments.push(commentId);
-    user.likedComments.splice(user.likedComments.findIndex(x => x === commentId));
+    if(res.wasLiked) user.likedComments.splice(user.likedComments.findIndex(x => x === commentId), 1);
     const info = await userCollection.updateOne({ _id: user._id }, {
         $set: {
             dislikedComments: user.dislikedComments,
@@ -155,9 +155,9 @@ async function removeLikeOrDislike(userId, commentId, like) {
         throw new Error(`No item was found in User collection that match with id: ${userId}`);
 
     if (like == 1) {
-        user.likedComments.splice(user.likedComments.findIndex(x => x === commentId));
+        user.likedComments.splice(user.likedComments.findIndex(x => x === commentId), 1);
     } else if (like == -1) {
-        user.dislikedComments.splice(user.dislikedComments.findIndex(x => x === commentId));
+        user.dislikedComments.splice(user.dislikedComments.findIndex(x => x === commentId), 1);
     } else {
         throw new Error('Illegal input recieved');
     }
