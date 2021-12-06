@@ -107,6 +107,7 @@ router.post('/', async (req, res) => {
     function stringCheck(str) {
         return typeof str === 'string' && str.length > 0 && str.replace(/\s/g, "").length > 0;
     }
+    const isLoggedIn = req.session !== undefined && req.session.user !== undefined; 
 
     try {
         if(!gameTitle || !releaseDate || !developer || !genre || !price || !boxart)
@@ -116,7 +117,11 @@ router.post('/', async (req, res) => {
     } catch (e) {
         res.status(400).render('videogames/creategamePage.handlebars', 
             { error: e.message,
-              previous: {gameTitle, releaseDate, developer, genre, price, boxart}
+              previous: {gameTitle, releaseDate, developer, genre, price, boxart},
+              isAdmin: req.session.user?.isAdmin,
+              userLoggedIn: isLoggedIn, 
+              username: username,
+              userId: userId
             });
         return;
     }
@@ -124,14 +129,31 @@ router.post('/', async (req, res) => {
     // Try to add game to database
     try {
         const newGame = await videogames.create(gameTitle, releaseDate, developer, genre, price, boxart)
+        const isLoggedIn = req.session !== undefined && req.session.user !== undefined; 
+
         if (!newGame) {
-            res.status(400).render('videogames/creategamePage.handlebars', { error: "Game was not successfully added" });
+            res.status(400).render('videogames/creategamePage.handlebars', 
+            {   error: "Game was not successfully added",
+                userLoggedIn: isLoggedIn, 
+                username: username,
+                userId: userI
+            });
         } else {
             // If game is added redirects you to its page
-            res.render('videogames/videogamesPage.handlebars', {videogameData: newGame});
+            res.render('videogames/videogamesPage.handlebars', 
+            {   videogameData: newGame,             
+                userLoggedIn: isLoggedIn, 
+                username: username,
+                userId: userId
+            });
         }
     } catch (e) {
-        res.status(400).render('videogames/creategamePage.handlebars', { error: e.message });
+        res.status(400).render('videogames/creategamePage.handlebars', 
+        {   error: e.message, 
+            userLoggedIn: isLoggedIn, 
+            username: username,
+            userId: userId 
+        });
         return;
     }
 });
