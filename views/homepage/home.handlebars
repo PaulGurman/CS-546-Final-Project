@@ -1,35 +1,37 @@
-<p>This is a web application of CS-546 Group 3!</p>
+<h1>
+    Videogames Rating
+</h1>
 
-
-<form method="get" action="/rating">
+<form method="get" action="/rating" id="start-rating">
     <button type="submit">Start Rating</button>
 </form>
 
 {{!-- search bar --}}
 <div class="search-head">
-
-    <div id="error" class="error" hidden></div>
+    <div id="error" class="alert alert-primary" role="alert" hidden></div>
 
     <form id="myForm">
-        <label for="searchTerm">Search: </label>
-        <input type="text" id="searchTerm" placeholder="Enter name">
+        <label for="searchTerm"></label>
+        <input type="text" id="searchTerm" placeholder="Search Videogames Here">
         <button type="submit">Submit</button>
     </form>
 
+    <div id="search-result" hidden>
+    </div>
+
+    <div class="no-result" id="no-result" hidden>
+        <p>No videogames with this name!</p>
+        <p> Please try again!</p>
+    </div>
 </div>
 
-<div id="search-result">
-</div>
 
-<div class="no-result" id="no-result" hidden>
-    <p>No results found!</p>
-</div>
 
 
 {{!-- videogames list --}}
 <div class="videogames-heading">
     <div class="videogames-title">
-        <p>Videogames</p>
+        <p>Videogames List</p>
     </div>
     <div class="filter">
         <div class="sort-btn">
@@ -43,26 +45,25 @@
 <div id="videogame-list">
     {{#each videogames}}
     <div class="card">
-        <div class="name">
-            <p> Name:</p>
-            <a href="/videogames/{{this._id}}">{{this.name}}</a>
-        </div>
-        <div class="genre">
-            <p>Genre:</p>
-            <p>{{this.genre}}</p>
-
-        </div>
-        <div class="score">
-            <p>Score:</p>
-            <p> {{this.averageUserRating}}</p>
-        </div>
-        <div class="videogame-img">
+        <div class="videogame-img" title="{{this.name}}">
             <img src="{{this.boxart}}">
         </div>
+        <div class="videogame-text">
+            <div class="name">
+                <a href="/videogames/{{this._id}}" title="Click to learn more">{{this.name}}</a>
+                <span hidden>{{this._id}}</span>
+            </div>
+            <div class="score">
+                <p> {{this.averageUserRating}}</p>
+            </div>
+        </div>
+
     </div>
     {{/each}}
 </div>
+<p>This is a web application of CS-546 Group 3!</p>
 
-
+<div id="modal" style="display: none;">
+</div>
 
 <script src="/public/js/videogameList.js"></script>
