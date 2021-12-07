@@ -23,10 +23,16 @@ function ObjectIdToString(obj) {
     return obj;
 }
 
-async function getRandomGame() {
+async function getRandomGame(id) {
     const videogamesCollection = await videogames();
     const allGames = await videogamesCollection.find({}).toArray();
     const randomGame = allGames[Math.floor(Math.random() * allGames.length)];
+    console.log(randomGame._id + " || " + id);
+    if(id != undefined)
+        id = id.toString();
+    if(randomGame._id.toString() == id)
+        return getRandomGame(id);
+    
     return randomGame;
 }
 
@@ -42,6 +48,10 @@ async function addRating(id, rating){
         throw new Error(`No item was found in User collection that match with id: ${id}`);
     
     let newRating = (game.totalVotes * game.averageUserRating + rating) / (game.totalVotes + 1);
+    let str = newRating.toFixed(2);
+    console.log(str);
+    newRating = parseFloat(str);
+    console.log(newRating);
 
     await gameCollection.updateOne({_id: objId}, {$set: {averageUserRating: newRating, totalVotes: game.totalVotes+1}});
     game = await gameCollection.findOne({_id: objId});

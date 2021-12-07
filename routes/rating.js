@@ -40,7 +40,7 @@ router.get('/', async(req, res) => {
             });
         } else {
             const newLeft = await ratings.getRandomGame();
-            const newRight = await ratings.getRandomGame();
+            const newRight = await ratings.getRandomGame(newLeft._id);
             req.session.leftGame = newLeft._id;
             req.session.rightGame = newRight._id;
             res.render('ratings/rating', {
@@ -78,7 +78,7 @@ router.post('/reset', async(req, res) => {
             await ratings.addRating(req.session.leftGame, 0);
         }
         const newLeft = await ratings.getRandomGame();
-        const newRight = await ratings.getRandomGame();
+        const newRight = await ratings.getRandomGame(newLeft._id);
 
         req.session.leftGame = newLeft._id;
         req.session.rightGame = newRight._id;

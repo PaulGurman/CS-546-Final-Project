@@ -1,6 +1,6 @@
 (function($) {
-    var leftGame = $('#Left');
-    var rightGame = $('#Right');
+    var leftGame = $('.Left');
+    var rightGame = $('.Right');
 
     function resetGames(config) {
         $.ajax(config).then(function(response){
