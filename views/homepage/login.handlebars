@@ -5,6 +5,10 @@
 </div>
 {{/if}}
 
+<div class="error" hidden>
+    <p> Username and/or passsword cannot be empty!</p>
+</div>
+
 <form action="/login" method="post" id="login-form">
     <div>
         <label for="username">Username</label>
@@ -17,8 +21,13 @@
     </div>
 
     <div>
-        <button type="submit">Login</button>
+        <button type="submit" d="submit-btn">Login</button>
     </div>
 </form>
 
-<a href="/signup">Need to register? Click here to sign-up</a>
+<a href="/signup" id="linkto-signup">Need to register? Click here to sign-up</a>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+<script src="/public/js/login.js"></script>
