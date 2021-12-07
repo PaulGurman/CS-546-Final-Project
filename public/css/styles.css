@@ -2,12 +2,14 @@
 * {
     text-decoration: none;
 }
+
 html,
 body {
     background-color: #000000;
-	font-size: 14pt;
+    font-size: 14pt;
     color: #D0D0D0;
 }
+
 form {
     color: #D0D0D0;
 }
@@ -200,6 +202,18 @@ main {
     margin: 20px;
 }
 
+#linkto-signup,
+#linkto-login {
+    color: seagreen;
+}
+
+#linkto-signup:hover {
+    color: white;
+}
+
+#linkto-login:hover {
+    color: white;
+}
 
 /* comment */
 
@@ -277,41 +291,48 @@ select {
     background-color: #4948487a;
 }
 
-.rating-container{
+.rating-container {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     gap: 20%;
 }
-.rating-container img{
+
+.rating-container img {
     width: 400px;
     height: 500px;
 }
-.left{
+
+.left {
     flex: 1;
     justify-content: center;
     align-items: center;
     transition: 1s ease;
 }
-.left img:hover{
+
+.left img:hover {
     cursor: pointer;
 }
-.right{
+
+.right {
     transition: 1s ease;
     justify-content: center;
     align-items: center;
     transition: 1s ease;
 }
-.right:hover{
+
+.right:hover {
     cursor: pointer;
 }
-nav{
+
+nav {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-nav a{
+
+nav a {
     box-shadow: 0 0 0 transparent;
     background-color: #fff;
     padding: 0 8px;
@@ -319,10 +340,12 @@ nav a{
     text-decoration: none;
     transition: all 0.2s ease-out;
 }
+
 nav a:hover {
     box-shadow: 0 2px 4px #ffffff;
     transform: scale(1.1, 1.1);
 }
+
 .makeRed {
     border-color: red;
 }
