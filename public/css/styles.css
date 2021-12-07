@@ -1,7 +1,15 @@
 /* navbar */
-
 * {
     text-decoration: none;
+}
+html,
+body {
+    background-color: #000000;
+	font-size: 14pt;
+    color: #D0D0D0;
+}
+form {
+    color: #D0D0D0;
 }
 
 main {
@@ -216,7 +224,7 @@ main {
 
 .comment {
     font-size: 16px;
-    background-color: #e9e9e9;
+    background-color: #36454F;
     height: auto;
     word-wrap: break-word;
 }
@@ -269,6 +277,52 @@ select {
     background-color: #4948487a;
 }
 
+.rating-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 20%;
+}
+.rating-container img{
+    width: 400px;
+    height: 500px;
+}
+.left{
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    transition: 1s ease;
+}
+.left img:hover{
+    cursor: pointer;
+}
+.right{
+    transition: 1s ease;
+    justify-content: center;
+    align-items: center;
+    transition: 1s ease;
+}
+.right:hover{
+    cursor: pointer;
+}
+nav{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+nav a{
+    box-shadow: 0 0 0 transparent;
+    background-color: #fff;
+    padding: 0 8px;
+    color: #000;
+    text-decoration: none;
+    transition: all 0.2s ease-out;
+}
+nav a:hover {
+    box-shadow: 0 2px 4px #ffffff;
+    transform: scale(1.1, 1.1);
+}
 .makeRed {
     border-color: red;
 }

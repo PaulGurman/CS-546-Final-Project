@@ -22,12 +22,14 @@ router.get('/', async(req, res) => {
             req.session.leftGame = leftGame._id;
             req.session.rightGame = rightGame._id;
             res.render('ratings/rating', {
+                id1: leftGame._id,
                 name1: leftGame.name,
                 image1: leftGame.boxart,
                 release1: leftGame.releaseDate,
                 genre1: leftGame.genre,
                 price1: leftGame.price,
                 developer1: leftGame.developer,
+                id2: rightGame._id,
                 name2: rightGame.name,
                 image2: rightGame.boxart,
                 release2: rightGame.releaseDate,
@@ -40,16 +42,18 @@ router.get('/', async(req, res) => {
             });
         } else {
             const newLeft = await ratings.getRandomGame();
-            const newRight = await ratings.getRandomGame();
+            const newRight = await ratings.getRandomGame(newLeft._id);
             req.session.leftGame = newLeft._id;
             req.session.rightGame = newRight._id;
             res.render('ratings/rating', {
+                id1: newLeft._id,
                 name1: newLeft.name,
                 image1: newLeft.boxart,
                 release1: newLeft.releaseDate,
                 genre1: newLeft.genre,
                 price1: newLeft.price,
                 developer1: newLeft.developer,
+                id2: newRight._id,
                 name2: newRight.name,
                 image2: newRight.boxart,
                 release2: newRight.releaseDate,
@@ -78,18 +82,20 @@ router.post('/reset', async(req, res) => {
             await ratings.addRating(req.session.leftGame, 0);
         }
         const newLeft = await ratings.getRandomGame();
-        const newRight = await ratings.getRandomGame();
+        const newRight = await ratings.getRandomGame(newLeft._id);
 
-        req.session.leftGame = newLeft._id;
-        req.session.rightGame = newRight._id;
+        req.session.leftGame = newLeft._id.toString();
+        req.session.rightGame = newRight._id.toString();
 
         const resetData = {
+            id1: newLeft._id,
             name1: newLeft.name,
             image1: newLeft.boxart,
             release1: newLeft.releaseDate,
             genre1: newLeft.genre,
             price1: newLeft.price,
             developer1: newLeft.developer,
+            id2: newRight._id,
             name2: newRight.name,
             image2: newRight.boxart,
             release2: newRight.releaseDate,
