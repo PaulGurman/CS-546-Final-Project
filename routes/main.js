@@ -52,6 +52,16 @@ router.post('/signup', async(req, res) => {
         res.status(400).render('homepage/signup', { status: 400, errorMessage: "Last name must be provided!" });
     }
     try {
+        checkFirstName = usersData.checkFirstName(firstName);
+    } catch (e) {
+        res.status(400).render('homepage/signup', { status: 400, errorMessage: e });
+    }
+    try {
+        checkLastName = usersData.checkLastName(lastName);
+    } catch (e) {
+        res.status(400).render('homepage/signup', { status: 400, errorMessage: e });
+    }
+    try {
         checkUserName = usersData.checkUserName(username);
     } catch (e) {
         res.status(400).render('homepage/signup', { status: 400, errorMessage: e });
