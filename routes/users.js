@@ -31,6 +31,20 @@ router.get('/:id', async (req, res) => {
             userLoggedIn: req.session.user !== undefined, isAdmin: req.session.user?.isAdmin});
 });
 
+router.get('/:id/comment', async(req, res) => {
+    if(!req.params || !req.params.id) {
+        res.status(400).json({error: 'No user id passed in'});
+        return;
+    }
+
+    try {
+        const userLikeDislikeHistory = await users.getUserLikeDislikeHistory(req.params.id);
+        res.json(userLikeDislikeHistory);
+    } catch (e){
+        res.status(500).json({error: `${e}`});
+    }
+})
+
 router.post('/:id/comment/:commentId', async(req, res) => {
     if(!req.params || !req.params.id || !req.params.commentId) {
         res.status(400).json({error: 'No user id passed in'});

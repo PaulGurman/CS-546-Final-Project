@@ -8,13 +8,36 @@ var thisScript = document.currentScript;
     const likeButton = $('.like-button');
     const dislikeButton = $('.dislike-button');
 
+    $(document).ready(function() {
+        const userId = thisScript.getAttribute('userId');
+
+        if(userId == '') return;
+
+        const requestConfig = {
+            url: `../users/${userId}/comment`,
+            type: 'GET'
+        };
+
+        $.ajax(requestConfig).then((res) => {
+            commentSection.children().each(function(index, li) {
+                const commentId = $(li).children().first().attr('comment-id');
+                console.log(commentId);
+                if(res.likedComments.findIndex(x => x === commentId) > -1) {
+                    $(li).children().first().children('.like-button').first().css('background-color', '#288628');
+                } else if(res.dislikedComments.findIndex(x => x === commentId) > -1) {
+                    $(li).children().first().children('.dislike-button').first().css('background-color', 'red');
+                }
+            });
+        });
+    });
+
     newCommentForm.submit(function(e){
         e.preventDefault();
 
         const username = thisScript.getAttribute('username');
         const title = titleInput.val();
         const comment = commentTextArea.val();
-        const date = (new Date()).toISOString().slice(0,10);
+        const date = (new Date()).toLocaleString().slice(0, 9);
 
         if(title.replace(/\s*/g, '').length === 0 || comment.replace(/\s*/g, '').length === 0) {
             missingInputMessage.show();
@@ -98,13 +121,15 @@ var thisScript = document.currentScript;
 
                 $.ajax(requestConfig).then((res) => {
                     likeCount.text(`Likes: ${res.likes}`);
+                    $(e.target).animate({'background-color': '#288628'}, 100);
 
                     // If comment was previously disliked, remove that data from user, and decrement dislike count for comment
                     if(wasDisliked) {
                         requestConfig.data = {like: -1, operation: 'remove'};
                         $.ajax(requestConfig).then((res) => {
                             dislikeCount.text(`Dislikes: ${res.dislikes}`);
-                            requestConfig.url = `../users/${userId}/comment/${commentId}`;
+                            relatedDislikeButton.css('background-color', 'white');
+                            // requestConfig.url = `../users/${userId}/comment/${commentId}`;
                             // requestConfig.data = {like: -1, operation: 'removeData'};
                             // $.ajax(requestConfig).then((res) => {
                             //     $(e.target).prop('disabled', false);
@@ -127,6 +152,7 @@ var thisScript = document.currentScript;
                     requestConfig.data = {like:1, operation: 'remove'};
                     $.ajax(requestConfig).then((res) => {
                         likeCount.text(`Likes: ${res.likes}`);
+                        $(e.target).css('background-color', 'white');
                         $(e.target).prop('disabled', false);
                         relatedDislikeButton.prop('disabled', false);
                     });
@@ -150,7 +176,7 @@ var thisScript = document.currentScript;
         const likeCount = $(e.target).parent().children('.like-count').first();
         const dislikeCount = $(e.target).parent().children('.dislike-count').first();
 
-        const relatedLikeButton = $(e.target).parent().children('.dislike-button').first();
+        const relatedLikeButton = $(e.target).parent().children('.like-button').first();
 
         // Disable buttons 
         $(e.target).prop('disabled', true);
@@ -172,11 +198,13 @@ var thisScript = document.currentScript;
 
                 $.ajax(requestConfig).then((res) => {
                     dislikeCount.text(`Dislikes: ${res.dislikes}`);
+                    $(e.target).animate({'background-color': 'red'}, 100);
                     // If comment was previously liked, remove that data from user, and decrement dislike count for comment
                     if(wasLiked) {
                         requestConfig.data = {like: 1, operation: 'remove'};
                         $.ajax(requestConfig).then((res) => {
                             likeCount.text(`Likes: ${res.likes}`);
+                            relatedLikeButton.css('background-color', 'white');
                             // requestConfig.url = `../users/${userId}/comment/${commentId}`;
                             // requestConfig.data = {like: 1, operation: 'removeData'};
                             // $.ajax(requestConfig).then((res) => {
@@ -200,6 +228,7 @@ var thisScript = document.currentScript;
                     requestConfig.data = {like: -1, operation: 'remove'};
                     $.ajax(requestConfig).then((res) => {
                         dislikeCount.text(`Dislikes: ${res.dislikes}`);
+                        $(e.target).css('background-color', 'white');
                         $(e.target).prop('disabled', false);
                         relatedLikeButton.prop('disabled', false);
                     });

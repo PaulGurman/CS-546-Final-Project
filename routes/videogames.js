@@ -56,6 +56,11 @@ router.post('/:id', async(req, res) => {
         return;
     }
 
+    if(!req.session.user) {
+        res.status(400).json({error: 'Cannot post comment when not logged in'});
+        return;
+    }
+
     if(!req.body.reviewer) {
         res.status(400).json({error: 'Missing username'});
         return;

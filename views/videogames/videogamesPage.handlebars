@@ -2,7 +2,7 @@
 {{#if videogameData.boxart}}
 <img src="{{videogameData.boxart}}" />
 {{else}}
-<img src="../../public/no-image.jpeg"/>
+<img src="../../public/no-image.jpeg" alt="{{videogameData.name}} box art"/>
 {{/if}}
 <dl>
     <dt>
@@ -83,4 +83,7 @@
     integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
     crossorigin="anonymous">
 </script>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+
 <script src="../../public/js/comment.js" userId="{{userId}}" username="{{username}}"></script>

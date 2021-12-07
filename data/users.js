@@ -168,6 +168,18 @@ async function removeLikeOrDislike(userId, commentId, like) {
 
 }
 
+async function getUserLikeDislikeHistory(userId) {
+    validateId(userId);
+
+    const userCollection = await users();
+
+    const user = await userCollection.findOne({ _id: ObjectId(userId) });
+    if (user == null)
+        throw new Error(`No item was found in User collection that match with id: ${userId}`);
+
+    return {likedComments: user.likedComments, dislikedComments: user.dislikedComments};
+}
+
 
 
 ////////fucntions for login and sign up///////
@@ -273,5 +285,6 @@ module.exports = {
     checkPassword,
     // createUser,
     checkUser,
-    getUserId
+    getUserId,
+    getUserLikeDislikeHistory
 }
