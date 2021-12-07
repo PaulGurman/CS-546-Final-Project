@@ -71,6 +71,7 @@ if (myForm) {
                 searchResult.hidden = false
             }
         } else {
+            noResult.hidden = true;
             errorDiv.hidden = false;
             errorDiv.innerHTML = "Input can not be empty!!!";
             myForm.reset();
