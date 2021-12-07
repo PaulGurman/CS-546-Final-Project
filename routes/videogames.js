@@ -1,6 +1,7 @@
 const express = require('express');
 const { videogames, comments } = require('../data');
 const router = express.Router();
+const xss = require('xss');
 
 router.get('/create', async (req, res) => {
     res.render('videogames/creategamePage.handlebars', { 
@@ -73,7 +74,7 @@ router.post('/:id', async(req, res) => {
     }
 
     try {
-        const comment = await comments.create(req.params.id, req.body.title, req.body.reviewer, req.body.date, req.body.comment);
+        const comment = await comments.create(req.params.id, xss(req.body.title), xss(req.body.reviewer), req.body.date, xss(req.body.comment));
         res.json(comment);
     } catch(e) {
         res.status(500).json({error: `${e}`});
