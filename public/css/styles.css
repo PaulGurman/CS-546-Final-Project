@@ -1,3 +1,200 @@
+/* navbar */
+
+* {
+    text-decoration: none;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.navbar {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 30px;
+    color: black;
+}
+
+.navbar div {
+    padding: 0 20px;
+}
+
+#start-rating button {
+    height: 30px;
+    height: 50px;
+}
+
+
+/* search-bar */
+
+.search-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.videogames-title {
+    font-size: xx-large;
+    font-weight: 600;
+}
+
+#searchTerm {
+    box-sizing: border-box;
+    border: 2px solid black;
+    border-radius: 5px;
+    outline: none;
+    height: 50px;
+    width: 260px;
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+#search-result {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.result-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#search-result .videogame-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.videogame-text .name {
+    padding: 0 20px;
+    background-color: rgb(208, 216, 92);
+    color: black;
+}
+
+.videogame-text .name:hover {
+    padding: 0 20px;
+    background-color: rgb(92, 216, 92);
+    color: black;
+}
+
+.videogame-text .name:hover {
+    cursor: pointer;
+}
+
+#myForm button {
+    height: 48px;
+}
+
+#error,
+.errorMessage {
+    font-size: large;
+    font-weight: 700;
+    font-style: italic;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: red;
+    margin-bottom: 30px;
+}
+
+#no-result {
+    text-align: center;
+    font-size: medium;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 600;
+    padding-top: 10px;
+}
+
+
+/* videogame List */
+
+.sort-btn {
+    display: flex;
+    flex-direction: row;
+}
+
+.sort-btn .btn {
+    height: 20px;
+    border: 1px solid gray;
+    height: 50px;
+    width: 100px;
+    margin: 0 20px;
+}
+
+.videogames-heading {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#videogame-list {
+    width: 100%;
+    display: grid;
+    justify-content: space-evenly;
+    align-items: stretch;
+    justify-items: stretch;
+    /* grid-template-columns: 1fr 1fr 1fr 1fr; */
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.card {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.card .videogame-img {
+    width: 100%;
+    height: 100%;
+}
+
+.card .videogame-img img {
+    width: 100%;
+    height: 100%;
+}
+
+.card .videogame-text {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+/* login/singup */
+
+#login-form,
+#signup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#login-form div {
+    margin: 20px;
+}
+
+#signup-form div {
+    margin: 20px;
+}
+
+
+/* comment */
+
 #comment-container {
     display: flex;
     flex-direction: column;
@@ -16,6 +213,7 @@
     flex-direction: column;
     width: 300px;
 }
+
 .comment {
     font-size: 16px;
     background-color: #e9e9e9;
@@ -26,14 +224,18 @@
 #create_game_form {
     width: 25%;
 }
-#create_game_form input, textarea, select {
-    width : 200px;
+
+#create_game_form input,
+textarea,
+select {
+    width: 200px;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
-  
-#create_game_form label, #submit_area {
+
+#create_game_form label,
+#submit_area {
     display: block;
 }
 
@@ -41,17 +243,17 @@
     margin: 5px 0px;
 }
 
-#preview{
+#preview {
     width: 20%;
     padding: 2px 4px;
     margin: 2px;
     border: 1px solid;
 }
-#preview img{
-    width:200px;
+
+#preview img {
+    width: 200px;
     height: 300px;
 }
-
 
 .error {
     width: 20%;
@@ -61,8 +263,8 @@
     background: #ffe0e0;
     border: 1px solid #a33a3a;
     box-sizing: border-box;
+}
 
-  }
 .error:hover {
     background-color: #4948487a;
 }

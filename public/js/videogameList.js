@@ -3,11 +3,12 @@ function getAllCards() {
     let videogames = [];
     for (let card of cards) {
         let videogame = {};
+        videogame.img = card.children[0].children[0].getAttribute("src");
+        videogame.name = card.children[1].children[0].children[0].innerHTML;
+        videogame._id = card.children[1].children[0].children[1].innerHTML;
+        // videogame.genre = card.children[1].children[1].innerHTML;
+        videogame.score = card.children[1].children[1].children[0].innerHTML;
 
-        videogame.name = card.children[0].children[1].innerHTML;
-        videogame.genre = card.children[1].children[1].innerHTML;
-        videogame.score = card.children[2].children[1].innerHTML;
-        videogame.img = card.children[3].children[0].getAttribute("src");
 
         videogames.push(videogame);
     }
@@ -28,53 +29,57 @@ if (myForm) {
         if (searchTerm.value && searchTerm.value.trim().length != 0) {
             errorDiv.hidden = true;
             noResult.hidden = true;
-            try {
-                let videoGames = getAllCards();
-                let arr = []
-                for (let i of videoGames) {
-                    if (i.name.toUpperCase() == searchTerm.value.toUpperCase()) {
-                        arr.push(i);
-                    };
+
+            let videoGames = getAllCards();
+            let arr = []
+            for (let i of videoGames) {
+                if (i.name.includes(searchTerm.value)) {
+                    arr.push(i);
                 };
-                if (arr.length > 0) {
-                    for (let i of arr) {
-                        const div = document.createElement('div');
-                        div.className = "result-card";
-                        div.innerHTML = `<div>
-                        <p> Name:</p>
-                        <p>${i.name}</p>
+            };
+            if (arr.length > 0) {
+                for (let i of arr) {
+                    if (searchResult.firstElementChild) {
+                        searchResult.removeChild(searchResult.firstElementChild)
+                    };
+                    const div = document.createElement('div');
+                    div.className = "result-card";
+                    div.innerHTML = `<div class="videogame-img">
+                        <img src="${i.img}" href="/videogames/${i._id}" title=${i.name}>
+                    </div>
+                    <div class="videogame-text">
+                        <div class="name">
+                            <a href="/videogames/${i._id}" title="Click to learn more">${i.name}</a>
                         </div>
-                        <div>
-                        <p>Genre:</p>
-                        <p>${i.genre}</p>
+                        <div class="score">
+                            <p> ${i.score}</p>
                         </div>
-                        <div>
-                        <p>Score:</p>
-                        <p> ${i.averageUserRating}</p>
-                        </div>
-                        <div class="videogame-img">
-                        <img src="${i.img}">
-                        </div>`
-                        searchResult.append(div);
-                    }
-                    myForm.reset();
-                    searchTerm.focus()
-                } else {
-                    noResult.hidden = false;
-                    myForm.reset();
-                    searchTerm.focus();
+                    </div>`
+                    searchResult.append(div);
+                    searchResult.hidden = false
                 }
-            } catch (e) {
-                errorDiv.hidden = false;
-                errorDiv.innerHTML = "Input must be alphanumeric characters!!!";
+                myForm.reset();
+                searchTerm.focus()
+            } else {
+                noResult.hidden = false;
                 myForm.reset();
                 searchTerm.focus();
+                if (searchResult.firstElementChild) {
+                    searchResult.removeChild(searchResult.firstElementChild)
+
+                }
+                searchResult.hidden = false
             }
         } else {
             errorDiv.hidden = false;
             errorDiv.innerHTML = "Input can not be empty!!!";
             myForm.reset();
             searchTerm.focus();
+            if (searchResult.firstElementChild) {
+                searchResult.removeChild(searchResult.firstElementChild)
+
+            }
+            searchResult.hidden = false
         }
     })
 };
@@ -90,21 +95,19 @@ function ascendingSort() {
     for (let vd of sortedVideoGames) {
         const div = document.createElement('div');
         div.className = "card";
-        div.innerHTML = `<div>
-        <p> Name:</p>
-        <p>${vd.name}</p>
+        div.innerHTML = `<div class="videogame-img" title=${vd.name}>
+        <img src="${vd.img}" >
     </div>
-    <div>
-        <p>Genre:</p>
-        <p>${vd.genre}</p>
-    </div>
-    <div>
-        <p>Score:</p>
-        <p> ${vd.score}</p>
-    </div>
-    <div class="videogame-img">
-        <img src="${vd.img}">
+    <div class="videogame-text">
+        <div class="name">
+            <a href="/videogames/${vd._id}" title="Click to learn more">${vd.name}</a>
+            <span hidden>${vd._id}</span>
+        </div>
+        <div class="score">
+            <p> ${vd.score}</p>
+        </div>
     </div>`
+
         videogameList.append(div);
     }
 }
@@ -120,21 +123,18 @@ function descendingSort() {
     for (let vd of sortedVideoGames) {
         const div = document.createElement('div');
         div.className = "card";
-        div.innerHTML = `<div>
-                <p> Name:</p>
-                <p>${vd.name}</p>
-            </div>
-            <div>
-                <p>Genre:</p>
-                <p>${vd.genre}</p>
-            </div>
-            <div>
-                <p>Score:</p>
-                <p> ${vd.score}</p>
-            </div>
-            <div class="videogame-img">
-                <img src="${vd.img}">
-            </div>`
+        div.innerHTML = `<div class="videogame-img" title=${vd.name}>
+        <img src="${vd.img}" >
+    </div>
+    <div class="videogame-text">
+        <div class="name">
+            <a href="/videogames/${vd._id}" title="Click to learn more">${vd.name}</a>
+            <span hidden>${vd._id}</span>
+        </div>
+        <div class="score">
+            <p> ${vd.score}</p>
+        </div>
+    </div>`
         videogameList.append(div);
     }
 }
