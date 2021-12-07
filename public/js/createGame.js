@@ -36,7 +36,7 @@
         errorArea.hide();
         errorArea.empty();
         var errored = false;
-        // idea taken from:
+        // idea taken from: iterative form input validation and missing value highlighting
         // https://stackoverflow.com/questions/47530753/not-able-to-highlight-the-input-fields-if-left-empty
         $( "input, select" ).each( function(){ //iterate all inputs
             var $this = $( this );

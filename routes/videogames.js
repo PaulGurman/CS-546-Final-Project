@@ -157,8 +157,9 @@ router.post('/', async (req, res) => {
         }
     } catch (e) {
         res.status(400).render('error/error.handlebars', 
-        {   error: e.message, 
-
+        {   
+            layout: null,
+            error: e.message, 
         });
         return;
     }
