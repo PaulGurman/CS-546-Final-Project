@@ -27,7 +27,6 @@ async function getRandomGame(id) {
     const videogamesCollection = await videogames();
     const allGames = await videogamesCollection.find({}).toArray();
     const randomGame = allGames[Math.floor(Math.random() * allGames.length)];
-    console.log(randomGame._id + " || " + id);
     if(id != undefined)
         id = id.toString();
     if(randomGame._id.toString() == id)
@@ -37,7 +36,6 @@ async function getRandomGame(id) {
 }
 
 async function addRating(id, rating){
-    console.log(id);
     validateId(id);
     const objId = ObjectId(id);
 
@@ -49,9 +47,7 @@ async function addRating(id, rating){
     
     let newRating = (game.totalVotes * game.averageUserRating + rating) / (game.totalVotes + 1);
     let str = newRating.toFixed(2);
-    console.log(str);
     newRating = parseFloat(str);
-    console.log(newRating);
 
     await gameCollection.updateOne({_id: objId}, {$set: {averageUserRating: newRating, totalVotes: game.totalVotes+1}});
     game = await gameCollection.findOne({_id: objId});
