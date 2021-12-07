@@ -139,8 +139,7 @@ router.post('/', async (req, res) => {
 
     // Try to add game to database
     try {
-        const newGame = await videogames.create(gameTitle, releaseDate, developer, genre, price, boxart)
-        const isLoggedIn = req.session !== undefined && req.session.user !== undefined; 
+        const newGame = await videogames.create(xss(gameTitle), xss(releaseDate), xss(developer), xss(genre), xss(price), xss(boxart))
 
         if (!newGame) {
             res.status(400).render('error/error.handlebars', 
@@ -158,8 +157,9 @@ router.post('/', async (req, res) => {
         }
     } catch (e) {
         res.status(400).render('error/error.handlebars', 
-        {   error: e.message, 
-
+        {   
+            layout: null,
+            error: e.message, 
         });
         return;
     }
