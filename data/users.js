@@ -210,39 +210,29 @@ function checkPassword(str) {
     if (newStr.length < 6) throw "Passsword must be at least 6 characters long!";
 }
 
+function checkLastName(str) {
+    if (str.length == 0 || str.trim().length == 0) throw "Last name cannot be empty!";
+    let strArr = str.toLowerCase().split('');
+    for (let i = 0; i < strArr.length; i++) {
+        if (strArr[i] === ' ') throw "Last name cannot contian space!"
+    }
+    let newStr = strArr.join('');
+    for (let i = 0; i < newStr.length; i++) {
+        if (!((newStr.charCodeAt(i) >= 97 && newStr.charCodeAt(i) <= 122))) throw "Last name must be characters!";
+    }
+}
 
-// async function createUser(firstname, lastname, username, password) { // different
-//     checkUserName(username);
-//     checkPassword(password);
-//     stringCheck(firstname);throw
-//     stringCheck(lastname);throw
-
-//     username = username.toLowerCase();
-
-//     const plainTextPassword = password;
-//     const hash = await bcrypt.hash(plainTextPassword, saltRounds);
-
-//     const usersCollection = await users();
-
-//     const findUserName = await usersCollection.findOne({ username: username });
-//     if (findUserName !== null) throw "Username already exist!";
-
-//     let user = {
-//         firstname: firstname,
-//         lastname: lastname,
-//         username: username,
-//         password: hash,
-//         numberOfVotes: 0,
-//         voteHistory: []
-//     };
-
-//     const insertUser = await usersCollection.insertOne(user);
-//     if (insertUser.insertedCount === 0) throw "Could not add user";
-//     user._id = user._id.toString();
-//     // let res = `{userInserted: true}`;
-//     return user
-// }
-
+function checkFirstName(str) {
+    if (str.length == 0 || str.trim().length == 0) throw "First name cannot be empty!";
+    let strArr = str.toLowerCase().split('');
+    for (let i = 0; i < strArr.length; i++) {
+        if (strArr[i] === ' ') throw "First name cannot contian space!"
+    }
+    let newStr = strArr.join('');
+    for (let i = 0; i < newStr.length; i++) {
+        if (!((newStr.charCodeAt(i) >= 97 && newStr.charCodeAt(i) <= 122))) throw "First name must be characters!";
+    }
+}
 async function checkUser(username, password) {
     checkUserName(username);
     checkPassword(password);
@@ -283,7 +273,8 @@ module.exports = {
     removeLikeOrDislike,
     checkUserName,
     checkPassword,
-    // createUser,
+  checkFirstName,
+  checkLastName,
     checkUser,
     getUserId,
     getUserLikeDislikeHistory
