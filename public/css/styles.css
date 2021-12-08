@@ -91,15 +91,13 @@ main {
     padding: 0 20px;
     background-color: rgb(208, 216, 92);
     color: black;
+    margin-right: 20px;
 }
 
 .videogame-text .name:hover {
     padding: 0 20px;
     background-color: rgb(92, 216, 92);
     color: black;
-}
-
-.videogame-text .name:hover {
     cursor: pointer;
 }
 
