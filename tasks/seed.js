@@ -16,6 +16,22 @@ async function main() {
         true
     )
 
+    // Create test users
+
+    const positive_gamer = await users.create(
+        "Test",
+        "Account",
+        "positiveGamer",
+        "password"
+    )
+
+    const angry_gamer = await users.create(
+        "Test",
+        "Account",
+        "angryGamer",
+        "password"
+    )
+
     /* Game format:
         game = {
             name: name,
@@ -35,7 +51,7 @@ async function main() {
         "Capcom",
         "Action",
         "19.99",
-        "https://howlongtobeat.com/games/250px-Resi4-gc-cover.jpg"
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co2wk8.png"
     );
     const discoElysium = await videogames.create(
         "Disco Elysium",
@@ -51,7 +67,7 @@ async function main() {
         "Bungie Inc",
         "Action",
         "29.99",
-        "https://upload.wikimedia.org/wikipedia/en/b/b4/Halo_3_final_boxshot.JPG"
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xhc.png"
     );
     const portal = await videogames.create(
         "Portal",
@@ -59,7 +75,7 @@ async function main() {
         "Valve",
         "Adventure",
         "9.99",
-        "https://i1.theportalwiki.net/img/thumb/b/b8/PortalBoxart.jpg/133px-PortalBoxart.jpg"
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co1x7d.png"
     );
     const burnout = await videogames.create(
         "Burnout™ Paradise",
@@ -67,7 +83,7 @@ async function main() {
         "Criterion Software",
         "Racing",
         "9.99",
-        "https://upload.wikimedia.org/wikipedia/en/thumb/a/ab/Burnout_Paradise_Boxart_2.jpg/220px-Burnout_Paradise_Boxart_2.jpg"
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co28p7.png"
     );
     const civ5 = await videogames.create(
         "Sid Meier's Civilization® V",
@@ -84,6 +100,46 @@ async function main() {
         "Simulation",
         "19.99",
         "https://howlongtobeat.com/games/Euro_Truck_Simulator_2_cover.jpg"
+    );
+    const sh2 = await videogames.create(
+        "Silent Hill 2",
+        "2001-09-27",
+        "Team Silent",
+        "Adventure",
+        "19.99",
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co2vyg.png"
+    );
+    const katamari = await videogames.create(
+        "Katamari Damacy",
+        "2004-03-18",
+        "NOW Production",
+        "Adventure",
+        "19.99",
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co2z8n.png"
+    );
+    const deusex = await videogames.create(
+        "Deus Ex",
+        "2000-06-26",
+        "Ion Storm",
+        "Action",
+        "9.99",
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7n.png"
+    );
+    const cod = await videogames.create(
+        "Call of Duty 4: Modern Warfare",
+        "2007-09-05",
+        "Treyarch",
+        "Action",
+        "19.99",
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co1wko.png"
+    );
+    const fallout = await videogames.create(
+        "Fallout: New Vegas",
+        "2010-10-19",
+        "Obsidian Entertainment",
+        "RPG",
+        "19.99",
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co1u60.png"
     );
     const re4id = re4._id;
     const discoElysiumid = discoElysium._id;
@@ -104,34 +160,26 @@ async function main() {
         dislikes:
     */
 
-    const pComment1 = await comments.create(
-        re4id, 
-        "Love this game!", 
-        "positive_gamer",
-        today,
-        "No matter how many times I play, it never gets old."
-    );
-    const pComment2 = await comments.create(
-        discoElysiumid, 
-        "This game is awesome too!", 
-        "positive_gamer",
-        today,
-        "No matter how many times I play, it never gets old."
-    );
-    const aComment1 = await comments.create(
-        re4id, 
-        "Hate this game!", 
-        "angry_gamer",
-        today,
-        "No matter how many times I play, I just don't like it."
-    );
-    const aComment2 = await comments.create(
-        discoElysiumid, 
-        "Hate this game!", 
-        "angry_gamer",
-        today,
-        "No matter how many times I play, I just don't like it."
-    );
+    const allGames = await videogames.getAllVideoGames();
+
+    for( const game of allGames){
+        const positiveComment = await comments.create(
+            game._id, 
+            "This game is awesome too!", 
+            "positiveGamer",
+            today,
+            "No matter how many times I play, it never gets old."
+        );
+        const negativeComment = await comments.create(
+            game._id, 
+            "Hate this game!", 
+            "angryGamer",
+            today,
+            "No matter how many times I play, I just don't like it."
+        );
+    }
+    
+
 
     //console.dir(await videogames.getAll(), { depth: null });
 

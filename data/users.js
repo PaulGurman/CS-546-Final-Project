@@ -42,7 +42,7 @@ async function create(firstname, lastname, username, password , isAdmin = false)
     const user = {
         firstname: firstname,
         lastname: lastname,
-        username: username,
+        username: username.toLowerCase(),
         password: hashedPassword,
         numberOfVotes: 0,
         voteHistory: [],
