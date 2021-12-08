@@ -140,21 +140,29 @@ main {
 }
 
 .videogames-heading {
-    width: 100%;
+    width: 80%;
+    padding: 10px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    border: 1px solid;
+    box-sizing: border-box;
+
 }
 
 #videogame-list {
-    width: 100%;
+    width: 80%;
     display: grid;
     justify-content: space-evenly;
     align-items: stretch;
     justify-items: stretch;
     /* grid-template-columns: 1fr 1fr 1fr 1fr; */
     grid-template-columns: repeat(4, 1fr);
+    background-color: #2b2d2e;
+    border: 1px solid;
+    box-sizing: border-box;
+
 }
 
 .card {
@@ -162,6 +170,8 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: end;
+    border: 1px solid;
+
 }
 
 .card .videogame-img {
@@ -186,6 +196,8 @@ main {
 
 #login-form,
 #signup-form {
+    background-color: #2b2d2e;
+    border: 1px solid;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -211,6 +223,26 @@ main {
 
 #linkto-login:hover {
     color: white;
+}
+
+/* user page */
+#userInfo {
+    width: 300px;
+    background-color: #2b2d2e;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+#userInfo ul {
+    list-style: none;
+    padding-left: 0;
+}
+#userInfo ol {
+    list-style-position: inside;
+    padding-left: 0;
 }
 
 /* comment */
@@ -241,16 +273,21 @@ main {
     word-wrap: break-word;
 }
 
+/* Create game page */
+
 #create_game_form {
-    width: 25%;
+    width: 40%;
+}
+#create_game_form fieldset {
+    background-color: #2b2d2e;
 }
 
 #create_game_form input,
 textarea,
 select {
-    width: 200px;
-    padding: 0;
-    margin: 0;
+    width: 75%;
+    padding: 6px 4px;
+    margin: 4px 0;
     box-sizing: border-box;
 }
 
@@ -268,6 +305,8 @@ select {
     padding: 2px 4px;
     margin: 2px;
     border: 1px solid;
+    background-color: #2b2d2e;
+    box-sizing: border-box;
 }
 
 #preview img {
@@ -280,14 +319,15 @@ select {
     padding: 2px 4px;
     margin: 2px;
     color: #ba3939;
-    background: #ffe0e0;
+    background: #e9c9c9;
     border: 1px solid #a33a3a;
     box-sizing: border-box;
 }
 
 .error:hover {
-    background-color: #4948487a;
+    background-color: #2b2d2e;
 }
+/* Rating game page */
 
 .rating-container {
     display: flex;
@@ -302,25 +342,29 @@ select {
     height: 500px;
 }
 
-.left {
+.Left {
+    background-color: #2b2d2e;
+    border: 1px solid;
     flex: 1;
     justify-content: center;
     align-items: center;
     transition: 1s ease;
 }
 
-.left img:hover {
+.Left img:hover {
     cursor: pointer;
 }
 
-.right {
+.Right {
+    background-color: #2b2d2e;
+    border: 1px solid;
     transition: 1s ease;
     justify-content: center;
     align-items: center;
     transition: 1s ease;
 }
 
-.right:hover {
+.Right:hover {
     cursor: pointer;
 }
 
