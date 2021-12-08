@@ -245,9 +245,24 @@ main {
     padding-left: 0;
 }
 
+/* Game Page */
+#gameInfo {
+    width: 400px;
+    background-color: #2b2d2e;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
 /* comment */
 
 #comment-container {
+    background-color: #2b2d2e;
+    border: 1px solid;
+    padding: 20px;
     display: flex;
     flex-direction: column;
 }
@@ -301,12 +316,16 @@ select {
 }
 
 #preview {
+    text-align: center;
     width: 20%;
     padding: 2px 4px;
     margin: 2px;
     border: 1px solid;
     background-color: #2b2d2e;
     box-sizing: border-box;
+}
+#preview dl{
+    list-style: none;
 }
 
 #preview img {
@@ -315,6 +334,7 @@ select {
 }
 
 .error {
+    text-align: center;
     width: 20%;
     padding: 2px 4px;
     margin: 2px;
