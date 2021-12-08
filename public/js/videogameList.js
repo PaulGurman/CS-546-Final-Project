@@ -33,7 +33,7 @@ if (myForm) {
             let videoGames = getAllCards();
             let arr = []
             for (let i of videoGames) {
-                if (i.name.includes(searchTerm.value)) {
+                if (i.name.toLocaleLowerCase().includes(searchTerm.value.toLocaleLowerCase())) {
                     arr.push(i);
                 };
             };

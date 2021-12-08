@@ -69,6 +69,9 @@ main {
 }
 
 #search-result {
+    background-color: #2b2d2e;
+    border: 1px solid;
+    padding: 5px;
     text-align: center;
     margin-top: 20px;
 }
@@ -350,6 +353,7 @@ select {
 /* Rating game page */
 
 .rating-container {
+    width:50%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -366,6 +370,7 @@ select {
     background-color: #2b2d2e;
     border: 1px solid;
     flex: 1;
+    flex-basis: 50%;
     justify-content: center;
     align-items: center;
     transition: 1s ease;
@@ -378,6 +383,8 @@ select {
 .Right {
     background-color: #2b2d2e;
     border: 1px solid;
+    flex: 1;
+    flex-basis: 50%;
     transition: 1s ease;
     justify-content: center;
     align-items: center;
