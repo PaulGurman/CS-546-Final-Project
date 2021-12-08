@@ -24,6 +24,11 @@ function stringCheck(str) {
 }
 
 async function create(firstname, lastname, username, password , isAdmin = false) {
+    checkFirstName(firstname);
+    checkLastName(lastname);
+    checkUserName(username);
+    checkPassword(password);
+
     if (!firstname || !lastname || !username || !password)
         throw new Error("Missing input");
 

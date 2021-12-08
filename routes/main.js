@@ -3,6 +3,7 @@ const data = require('../data');
 const router = express.Router();
 const videogames = data.videogames;
 const usersData = data.users;
+const xss = require('xss');
 
 
 router.get('/', async(req, res) => {
@@ -74,7 +75,7 @@ router.post('/signup', async(req, res) => {
     }
 
     try {
-        const createUser = await usersData.create(firstName, lastName, username.toLowerCase(), password); //create function in data/users.js
+        const createUser = await usersData.create(xss(firstName), xss(lastName), xss(username.toLowerCase()), xss(password)); //create function in data/users.js
         if (createUser) {
             res.redirect('/login');
         } else {
