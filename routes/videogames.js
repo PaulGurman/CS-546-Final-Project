@@ -133,6 +133,9 @@ router.post('/', async (req, res) => {
             throw new Error("Missing input");
         if(!stringCheck(gameTitle) || !stringCheck(releaseDate) || !stringCheck(developer) || !stringCheck(genre) || !stringCheck(price) || !stringCheck(boxart))
             throw new Error("All strings must contain non-whitespace characters");        
+        if(typeof parseFloat(price) !== 'number' || parseFloat(price) < 0){
+            throw new Error("Price must be a non-negative number");
+        }
     } catch (e) {
         res.status(400).render('error/error.handlebars', 
             { 

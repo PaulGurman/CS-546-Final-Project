@@ -19,7 +19,7 @@
                 "<p id='Release'>" + response.release2 + "</p>" +
                 "<p id='genre'>" + response.genre2 + "</p>" +
                 "<p id='price'>" + response.price2 + "</p>" + 
-                "<p id='developer'>" + response.developer1 + "</p>";
+                "<p id='developer'>" + response.developer2 + "</p>";
             leftGame.html(leftHTML);
             rightGame.html(rightHTML);
         });

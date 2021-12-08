@@ -2,7 +2,6 @@
     var previewArea = $('#preview');
     var errorArea = $('.error');
 
-
     errorArea.click(function(){
         $(this).hide();
         $(this).empty();
@@ -17,9 +16,18 @@
             previewArea.show();
         }
         else{
-            var image = $(`<img src=${$('#boxart').val()} alt=Bad_Image_Link>`);
-            previewArea.append(image);
-            previewArea.show();
+            var image = new Image();
+            image.src = $('#boxart').val();
+            image.onload = function() {
+                previewArea.append(image);
+                previewArea.show();
+            };
+            image.onerror = function() {
+                previewArea.append($("<p>Image link is not valid</p>"));
+                previewArea.show();
+            };
+
+
         }
     });
 
@@ -55,7 +63,12 @@
             errorArea.show();
             return;
         }
-      
+
+        if(price < 0 ){
+            errorArea.append($("<p>Price cannot be negative</p>"));
+            errorArea.show();
+            return;
+        }
 
         var formSubmitConfig = {
             method: 'POST',
@@ -69,7 +82,7 @@
                 price: price,
                 boxart: boxart
             }),
-            //This should never get called
+            //This should never get called means server has errored/input validation in client side insufficient
             error: function(request){
                 errorArea.empty();
                 errorArea.append($(`<h1>Server Errored with code ${request.status}</h1>`));
@@ -77,14 +90,26 @@
                 errorArea.show();
             }      
         };
-        $.ajax(formSubmitConfig).then(function(responseMessage){
-            var gamePage = $(responseMessage);
-            previewArea.hide();
-            previewArea.empty();
-            previewArea.append(gamePage);
-            previewArea.show();
-            $("#create_game_form").trigger('reset');
-        });
+       
+        //Check to see if boxart is valid before submitting the game
+        var image = new Image();
+        image.src = boxart;
+        image.onload = function() {
+            $.ajax(formSubmitConfig).then(function(responseMessage){
+                var gamePage = $(responseMessage);
+                previewArea.hide();
+                previewArea.empty();
+                previewArea.append(gamePage);
+                previewArea.show();
+                $("#create_game_form").trigger('reset');
+            });
+        };
+        image.onerror = function() {
+            errorArea.append($("<p>Image link is not valid</p>"));
+            errorArea.show();
+        };
+
+
     });
 
     $( "input,select" ).focus( function(){
