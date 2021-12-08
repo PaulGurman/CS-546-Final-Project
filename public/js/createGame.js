@@ -2,6 +2,9 @@
     var previewArea = $('#preview');
     var errorArea = $('.error');
 
+    previewArea.hide();
+    errorArea.hide();
+
     errorArea.click(function(){
         $(this).hide();
         $(this).empty();
@@ -43,6 +46,9 @@
 
         errorArea.hide();
         errorArea.empty();
+
+        previewArea.hide();
+        previewArea.empty();
         var errored = false;
         // idea taken from: iterative form input validation and missing value highlighting
         // https://stackoverflow.com/questions/47530753/not-able-to-highlight-the-input-fields-if-left-empty
@@ -60,6 +66,7 @@
          });
 
         if(errored){
+
             errorArea.show();
             return;
         }
