@@ -24,6 +24,7 @@ function ObjectIdToString(obj) {
 }
 
 async function getRandomGame(id) {
+    // id is an optional input, if provided, it will exclude the game with the given id
     const videogamesCollection = await videogames();
     const allGames = await videogamesCollection.find({}).toArray();
     const randomGame = allGames[Math.floor(Math.random() * allGames.length)];
