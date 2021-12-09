@@ -269,6 +269,14 @@ async function getUserId(username) {
     userData._id = userData._id.toString();
     return userData._id
 }
+
+async function checkDuplicateUsername(username){
+    checkUserName(username);
+    lowerUserName = username.toLowerCase();
+    const usersCollection = await users();
+    const findUserName = await usersCollection.findOne({ username: lowerUserName });
+    if (findUserName) throw "Username already exists!";
+}
 module.exports = {
     create,
     getUser,
@@ -282,5 +290,6 @@ module.exports = {
   checkLastName,
     checkUser,
     getUserId,
-    getUserLikeDislikeHistory
+    getUserLikeDislikeHistory,
+    checkDuplicateUsername
 }

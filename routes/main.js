@@ -75,8 +75,8 @@ router.post('/signup', async(req, res) => {
     }
 
     try {
-        const checkUser = await usersData.checkUser(username, password);
-        if (checkUser){
+        const checkDuplicateUsername = await usersData.checkDuplicateUsername(username);
+        if (checkDuplicateUsername){
             res.status(400).render('homepage/signup', { status: 400, errorMessage: "User already exisits!" });
         }else{
             const createUser = await usersData.create(xss(firstName), xss(lastName), xss(username.toLowerCase()), xss(password)); //create function in data/users.js
