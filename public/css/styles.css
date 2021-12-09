@@ -98,9 +98,12 @@ main {
     max-width: 50%;
     min-width: 50%;
     padding: 0 20px;
-    background-color: rgb(208, 216, 92);
+    background-color: #d0d85c;
     color: black;
     margin-right: 20px;
+}
+.videogame-text a {
+    color: #0058b1;
 }
 
 .videogame-text .name:hover {
