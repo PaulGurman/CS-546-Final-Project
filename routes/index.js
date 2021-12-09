@@ -8,7 +8,7 @@ const constructor = (app) => {
     app.use('/users', users);
     app.use('/videogames', videogames);
     app.use('*', (req, res) => {
-        res.sendStatus(404);
+        res.status(404).render('error/error', {error: "404: Page not found."});
     })
 };
 

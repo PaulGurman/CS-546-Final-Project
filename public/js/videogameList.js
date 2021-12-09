@@ -49,7 +49,7 @@ if (myForm) {
                     </div>
                     <div class="videogame-text">
                         <div class="name">
-                            <a href="/videogames/${i._id}" title="Click to learn more">${i.name}</a>
+                            <a href="/videogames/${i._id}" title="Click to learn more" alt="${i.name}">${i.name}</a>
                         </div>
                         <div class="score">
                             <p> ${i.score}</p>
