@@ -91,6 +91,8 @@ main {
 }
 
 .videogame-text .name {
+    max-width: 50%;
+    min-width: 50%;
     padding: 0 20px;
     background-color: rgb(208, 216, 92);
     color: black;
