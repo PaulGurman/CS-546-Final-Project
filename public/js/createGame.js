@@ -61,7 +61,7 @@
             {
                errored = true;
                $this.addClass( "makeRed" ); //add if input is empty
-               errorArea.append($(`<p>Empty Field: ${$(this).attr("name")}</p>`));
+               errorArea.append($(`<p class="makeRed">Empty Field: ${$(this).attr("name")}</p>`));
 
             }
          });

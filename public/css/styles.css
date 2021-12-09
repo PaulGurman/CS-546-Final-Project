@@ -371,7 +371,7 @@ select {
     width: 20%;
     padding: 2px 4px;
     margin: 2px;
-    color: #ba3939;
+    color: #b41111;
     background: #e9c9c9;
     border: 1px solid #a33a3a;
     box-sizing: border-box;
@@ -446,5 +446,13 @@ nav a:hover {
 }
 
 .makeRed {
-    border-color: red;
+    border-color: #b41111;
+}
+
+.videogame-link {
+    color: #8686ff
+}
+
+.videogame-link:visited {
+    color: #8686ff;
 }
