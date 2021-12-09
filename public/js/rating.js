@@ -9,17 +9,17 @@
                 return;
             }
             var leftHTML = "<a href='/videogames/" + response.id1 + "'>" + response.name1 + "</a>" + 
-                "<img src='" + response.image1 + "'/>" +
-                "<p id='Release'>" + response.release1 + "</p>" + 
-                "<p id='genre'>" + response.genre1 + "</p>" +
-                "<p id='price'>" + response.price1 + "</p>" + 
-                "<p id='developer'>" + response.developer1 + "</p>";
+                "<img src='" + response.image1 + "' alt='" + response.name1 + "'/>" +
+                "<p id='releaseL'>" + response.release1 + "</p>" + 
+                "<p id='genreL'>" + response.genre1 + "</p>" +
+                "<p id='priceL'>" + response.price1 + "</p>" + 
+                "<p id='developerL'>" + response.developer1 + "</p>";
             var rightHTML = "<a href='/videogames/" + response.id2 + "'>" + response.name2 + "</a>" +
-                "<img src='" + response.image2 + "'/>" +
-                "<p id='Release'>" + response.release2 + "</p>" +
-                "<p id='genre'>" + response.genre2 + "</p>" +
-                "<p id='price'>" + response.price2 + "</p>" + 
-                "<p id='developer'>" + response.developer2 + "</p>";
+                "<img src='" + response.image2 + "'alt='" + response.name2 + "'/>" +
+                "<p id='releaseR'>" + response.release2 + "</p>" +
+                "<p id='genreR'>" + response.genre2 + "</p>" +
+                "<p id='priceR'>" + response.price2 + "</p>" + 
+                "<p id='developerR'>" + response.developer2 + "</p>";
             leftGame.html(leftHTML);
             rightGame.html(rightHTML);
         });
