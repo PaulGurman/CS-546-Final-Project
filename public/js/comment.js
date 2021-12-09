@@ -34,7 +34,7 @@ var thisScript = document.currentScript;
     newCommentForm.submit(function(e){
         e.preventDefault();
 
-        const username = thisScript.getAttribute('username');
+        const username = thisScript.getAttribute('data-username');
         const title = titleInput.val();
         const comment = commentTextArea.val();
         const date = (new Date()).toLocaleString().slice(0, 9);
