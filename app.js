@@ -29,7 +29,7 @@ app.use(function(req, res, next) {
 app.use('/users', (req, res, next) => {
     // console.log(req.url);
     if (!req.session.user) {
-        return res.redirect('/');
+        return res.redirect('/login');
     } else {
         return next();
     } 
@@ -38,7 +38,7 @@ app.use('/users', (req, res, next) => {
 app.use('/rating', (req, res, next) => {
     // console.log(req.url);
     if (!req.session.user) {
-        return res.redirect('/');
+        return res.redirect('/login');
     } else {
         return next();
     } 
