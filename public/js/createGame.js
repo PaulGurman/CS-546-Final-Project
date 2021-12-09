@@ -22,6 +22,7 @@
             var image = new Image();
             image.src = $('#boxart').val();
             image.onload = function() {
+                image.alt = "preview image";
                 previewArea.append(image);
                 previewArea.show();
             };

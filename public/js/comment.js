@@ -9,7 +9,7 @@ var thisScript = document.currentScript;
     const dislikeButton = $('.dislike-button');
 
     $(document).ready(function() {
-        const userId = thisScript.getAttribute('userId');
+        const userId = thisScript.getAttribute('data-userId');
 
         if(userId == '') return;
 
@@ -20,7 +20,7 @@ var thisScript = document.currentScript;
 
         $.ajax(requestConfig).then((res) => {
             commentSection.children().each(function(index, li) {
-                const commentId = $(li).children().first().attr('comment-id');
+                const commentId = $(li).children().first().attr('data-comment-id');
                 console.log(commentId);
                 if(res.likedComments.findIndex(x => x === commentId) > -1) {
                     $(li).children().first().children('.like-button').first().css('background-color', '#288628');
@@ -75,7 +75,7 @@ var thisScript = document.currentScript;
         }
         $.ajax(requestConfig).then((res) => {
             //console.log(res._id);
-            commentDiv.attr('comment-id', res._id);
+            commentDiv.attr('data-comment-id', res._id);
         });
 
         // Clear inputs
@@ -87,8 +87,8 @@ var thisScript = document.currentScript;
     const likeFunction = function(e) {
         e.preventDefault();
 
-        const commentId = $(e.target).parent().attr('comment-id');
-        const userId = thisScript.getAttribute('userId');
+        const commentId = $(e.target).parent().attr('data-comment-id');
+        const userId = thisScript.getAttribute('data-userId');
 
         if(!userId) {
             window.location.replace('../login');
@@ -165,8 +165,8 @@ var thisScript = document.currentScript;
     const dislikeFunction = function(e) {
         e.preventDefault();
 
-        const commentId = $(e.target).parent().attr('comment-id');
-        const userId = thisScript.getAttribute('userId');
+        const commentId = $(e.target).parent().attr('data-comment-id');
+        const userId = thisScript.getAttribute('data-userId');
 
         if(!userId) {
             window.location.replace('../login');

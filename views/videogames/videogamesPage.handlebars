@@ -1,7 +1,7 @@
 <div id="gameInfo">
 <h1>{{videogameData.name}}</h1>
 {{#if videogameData.boxart}}
-<img src="{{videogameData.boxart}}" />
+<img src="{{videogameData.boxart}}" alt="{{videogameData.name}}" />
 {{else}}
 <img src="../../public/no-image.jpeg" alt="{{videogameData.name}} box art"/>
 {{/if}}
@@ -52,7 +52,7 @@
     <ul id='comment-section'>
         {{#each videogameData.comments}}
         <li>
-            <div class='comment' comment-id='{{_id}}'>
+            <div class='comment' data-comment-id='{{_id}}'>
                 <p>{{title}}</p>
                 <p>{{reviewer}}, {{date}}</p>
                 <p>{{comment}}</p>
@@ -88,4 +88,4 @@
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
 
-<script src="../../public/js/comment.js" userId="{{userId}}" username="{{username}}"></script>
+<script src="../../public/js/comment.js" data-userId="{{userId}}" data-username="{{username}}"></script>

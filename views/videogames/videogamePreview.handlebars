@@ -1,9 +1,9 @@
 <h1>New Game Preview</h1>
 <h2>{{videogameData.name}}</h2>
 {{#if videogameData.boxart}}
-<img src="{{videogameData.boxart}}" />
+<img src="{{videogameData.boxart}}" alt="{{videogameData.name}}"/>
 {{else}}
-<img src="../../public/no-image.jpeg"/>
+<img src="../../public/no-image.jpeg" alt="no-image"/>
 {{/if}}
 <dl>
     <dt>
