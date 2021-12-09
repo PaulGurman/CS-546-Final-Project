@@ -68,7 +68,7 @@ if (myForm) {
                     searchResult.removeChild(searchResult.firstElementChild)
 
                 }
-                searchResult.hidden = false
+                searchResult.hidden = true;
             }
         } else {
             noResult.hidden = true;
@@ -80,7 +80,7 @@ if (myForm) {
                 searchResult.removeChild(searchResult.firstElementChild)
 
             }
-            searchResult.hidden = false
+            searchResult.hidden = true;
         }
     })
 };
