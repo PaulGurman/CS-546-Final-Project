@@ -22,6 +22,10 @@ main {
     font-family: 'Times New Roman', Times, serif;
 }
 
+#intro {
+    width: 70%;
+}
+
 .navbar {
     padding-top: 10px;
     display: flex;
@@ -145,7 +149,7 @@ main {
 }
 
 .videogames-heading {
-    width:80%;
+    width: 80%;
     padding: 10px;
     display: flex;
     flex-direction: row;
@@ -154,7 +158,8 @@ main {
     border: 1px solid;
     box-sizing: border-box;
 }
-.filter{
+
+.filter {
     min-width: 0;
 }
 
@@ -164,7 +169,7 @@ main {
     justify-content: space-evenly;
     align-items: stretch;
     justify-items: stretch;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr) );
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     box-sizing: border-box;
     background-color: #2b2d2e;
     border: 1px solid;
@@ -241,10 +246,12 @@ main {
     justify-items: center;
     font-family: 'Times New Roman', Times, serif;
 }
+
 #userInfo ul {
     list-style: none;
     padding-left: 0;
 }
+
 #userInfo ol {
     list-style-position: inside;
     padding-left: 0;
@@ -261,10 +268,12 @@ main {
     justify-items: center;
     font-family: 'Times New Roman', Times, serif;
 }
-#gameInfo h1{
+
+#gameInfo h1 {
     text-align: center;
 }
-#gameInfo img{
+
+#gameInfo img {
     max-width: 300px;
     max-height: 400px;
 }
@@ -305,6 +314,7 @@ main {
 #create_game_form {
     width: 40%;
 }
+
 #create_game_form fieldset {
     background-color: #2b2d2e;
 }
@@ -340,10 +350,13 @@ select {
     box-sizing: border-box;
 
 }
-#preview dl,#preview dd{
+
+#preview dl,
+#preview dd {
     margin: 0;
 }
-#preview dt{
+
+#preview dt {
     text-decoration: underline;
     margin: 10px 0px;
 }
@@ -367,10 +380,11 @@ select {
 .error:hover {
     background-color: #2b2d2e;
 }
+
 /* Rating game page */
 
 .rating-container {
-    width:60%;
+    width: 60%;
     margin: 10px 0px;
     display: flex;
     justify-content: center;
@@ -385,22 +399,27 @@ select {
     height: 500px
 }
 
-.Left, .Right {
+.Left,
+.Right {
     width: 50%;
     max-width: 500px;
     height: 100%;
     background-color: #2b2d2e;
     border: 1px solid;
-    display:flex;
-    flex-direction:column;
-    text-align:center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
     align-items: center;
     transition: 1s ease;
 }
-.Left img, .Right img{
+
+.Left img,
+.Right img {
     box-sizing: border-box;
 }
-.Left img:hover, .Right img:hover  {
+
+.Left img:hover,
+.Right img:hover {
     cursor: pointer;
     border: 1px solid green;
 }
