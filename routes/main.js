@@ -75,12 +75,18 @@ router.post('/signup', async(req, res) => {
     }
 
     try {
-        const createUser = await usersData.create(xss(firstName), xss(lastName), xss(username.toLowerCase()), xss(password)); //create function in data/users.js
-        if (createUser) {
-            res.redirect('/login');
-        } else {
-            res.status(500).json({ message: "Internal Server Error" });
+        const checkUser = await usersData.checkUser(username, password);
+        if (checkUser){
+            res.status(400).render('homepage/signup', { status: 400, errorMessage: "User already exisits!" });
+        }else{
+            const createUser = await usersData.create(xss(firstName), xss(lastName), xss(username.toLowerCase()), xss(password)); //create function in data/users.js
+            if (createUser) {
+                res.redirect('/login');
+            } else {
+                res.status(500).json({ message: "Internal Server Error" });
+            }
         }
+        
     } catch (e) {
         res.status(400).render('homepage/signup', { status: 400, errorMessage: e });
     }
