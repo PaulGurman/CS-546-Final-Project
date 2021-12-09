@@ -261,6 +261,9 @@ main {
     justify-items: center;
     font-family: 'Times New Roman', Times, serif;
 }
+#gameInfo h1{
+    text-align: center;
+}
 #gameInfo img{
     max-width: 300px;
     max-height: 400px;
