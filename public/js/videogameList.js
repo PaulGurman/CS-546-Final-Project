@@ -56,10 +56,10 @@ if (myForm) {
                         </div>
                     </div>`
                     searchResult.append(div);
-                    searchResult.hidden = false
+                    searchResult.hidden = false;
                 }
                 myForm.reset();
-                searchTerm.focus()
+                searchTerm.focus();
             } else {
                 noResult.hidden = false;
                 myForm.reset();
