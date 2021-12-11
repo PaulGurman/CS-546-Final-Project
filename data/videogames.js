@@ -27,6 +27,10 @@ async function create(name, releaseDate, developer, genre, price, boxart) {
     if (!stringCheck(name) || !stringCheck(releaseDate) || !stringCheck(developer) || !stringCheck(genre) || !stringCheck(price) || !stringCheck(boxart))
         throw new Error("All strings must contain non-whitespace characters");
 
+    if(typeof parseFloat(price) !== 'number' || parseFloat(price) < 0){
+        throw new Error("Price must be a non-negative number");
+    }
+
     const gameCollection = await videogames();
 
     const game = {

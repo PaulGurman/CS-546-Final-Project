@@ -109,8 +109,8 @@ main {
 }
 
 .videogame-text a:hover {
-    background-color: rgb(92, 216, 92);
-    color: black;
+    background-color: #5cd85c;
+    color: #004d9c;
     cursor: pointer;
 }
 
@@ -382,6 +382,7 @@ select {
 }
 
 .error:hover {
+    color: #d27b7b;
     background-color: #2b2d2e;
 }
 
