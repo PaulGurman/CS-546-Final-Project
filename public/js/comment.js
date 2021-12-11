@@ -37,7 +37,7 @@ var thisScript = document.currentScript;
         const username = thisScript.getAttribute('data-username');
         const title = titleInput.val();
         const comment = commentTextArea.val();
-        const date = (new Date()).toLocaleString().slice(0, 9);
+        const date = (new Date()).toLocaleString().slice(0, 10);
 
         if(title.replace(/\s*/g, '').length === 0 || comment.replace(/\s*/g, '').length === 0) {
             missingInputMessage.show();
