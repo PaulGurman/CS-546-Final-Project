@@ -96,8 +96,8 @@ function ascendingSort() {
     for (let vd of sortedVideoGames) {
         const div = document.createElement('div');
         div.className = "card";
-        div.innerHTML = `<div class="videogame-img" title=${vd.name}>
-        <img src="${vd.img}" >
+        div.innerHTML = `<div class="videogame-img" title="${vd.name}">
+        <img src="${vd.img}" alt="${vd.name}" >
     </div>
     <div class="videogame-text">
         <div class="name">
@@ -124,8 +124,8 @@ function descendingSort() {
     for (let vd of sortedVideoGames) {
         const div = document.createElement('div');
         div.className = "card";
-        div.innerHTML = `<div class="videogame-img" title=${vd.name}>
-        <img src="${vd.img}" >
+        div.innerHTML = `<div class="videogame-img" title="${vd.name}">
+        <img src="${vd.img}" alt="${vd.name}" >
     </div>
     <div class="videogame-text">
         <div class="name">

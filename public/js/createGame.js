@@ -67,12 +67,12 @@
          });
 
         if(errored){
-
             errorArea.show();
             return;
         }
 
         if(price < 0 ){
+            $("#price").addClass("makeRed");
             errorArea.append($("<p>Price cannot be negative</p>"));
             errorArea.show();
             return;
