@@ -95,19 +95,20 @@ main {
 }
 
 .videogame-text .name {
-    max-width: 50%;
-    min-width: 50%;
-    padding: 0 20px;
+    width:100%;
     background-color: #d0d85c;
-    color: black;
-    margin-right: 20px;
+    text-align: center;
+    
 }
 .videogame-text a {
+    display: flex;
+    justify-content: center;
+    padding: 5px 10px;
+    width:auto;
     color: #0058b1;
 }
 
-.videogame-text .name:hover {
-    padding: 0 20px;
+.videogame-text a:hover {
     background-color: rgb(92, 216, 92);
     color: black;
     cursor: pointer;
